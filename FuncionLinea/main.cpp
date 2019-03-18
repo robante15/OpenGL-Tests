@@ -13,6 +13,21 @@ static void circuloPoligono(GLfloat coorX, GLfloat coorY, GLfloat radio, std::st
 static void
 circuloLineas(GLfloat coorX, GLfloat coorY, GLfloat radio, std::string colorHexa, GLint fracCirc, GLfloat anchoLinea);
 
+static void
+sectorCirculoLinea(GLfloat coorX, GLfloat coorY, GLfloat radio, std::string colorHexa, GLint fracCirc,
+                   GLfloat anchoLinea, GLfloat rotacionG, GLfloat aperturaGrad);
+
+static void
+sectorCirculoPoly(GLfloat coorX, GLfloat coorY, GLfloat radio, std::string colorHexa, GLint fracCirc, GLfloat rotacionG,
+                  GLfloat aperturaGrad);
+
+static void segmentoCirculoPoly(GLfloat coorX, GLfloat coorY, GLfloat radio, std::string colorHexa, GLint fracCirc,
+                                GLfloat rotacionG, GLfloat aperturaGrad);
+
+static void
+segmentoCirculoLinea(GLfloat coorX, GLfloat coorY, GLfloat radio, std::string colorHexa, GLint fracCirc,
+                     GLfloat anchoLinea, GLfloat rotacionG, GLfloat aperturaGrad);
+
 void display(void) {
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -30,10 +45,13 @@ void display(void) {
             {0.0,  -1.0, 0.0}
     };
 
-    circuloPoligono(-5, 0, 2, "00FF00", 15);
-    circuloLineas(5, 4, 4, "00FF00", 15, 1);
     lineStrip(array1, 4, 3, "00FFF0", 1);
-    lineStrip(array2, 4, 3, "FFFFF0", 5);
+    sectorCirculoLinea(5.5, 5.5, 4, "00FF00", 15, 1, 315, 90);
+    sectorCirculoPoly(-5.5, 5.5, 4, "00FF00", 15, 35, 125);
+    circuloPoligono(1, 7.5, 2, "00FF00", 15);
+    circuloLineas(-7.5, 3, 2, "00FF00", 15,2);
+    segmentoCirculoPoly(-2.5,2.5,2.5,"FF0000",25,0,270);
+    segmentoCirculoLinea(3,2.5,2.5,"0000FF",25,1,180,270);
 
 
     glFlush();
@@ -82,6 +100,87 @@ circuloLineas(GLfloat coorX, GLfloat coorY, GLfloat radio, std::string colorHexa
     for (int i = 0; i < fracCirc + 1; i++) {  // +1 para cerrar
         glVertex2f(coorX + radio * cos(2.0 * M_PI * i / fracCirc),
                    coorY + radio * sin(2.0 * M_PI * i / fracCirc));
+    }
+    glEnd();
+}
+
+static GLfloat Grados2Radianes(GLfloat grados) {
+    GLfloat radianes;
+    radianes = (M_PI * grados) / 180;
+    return radianes;
+}
+
+static void
+sectorCirculoLinea(GLfloat coorX, GLfloat coorY, GLfloat radio, std::string colorHexa, GLint fracCirc,
+                   GLfloat anchoLinea, GLfloat rotacionG, GLfloat aperturaGrad) {
+    GLfloat *color = Hex2RGB(colorHexa);
+    glColor3fv(color);
+    glLineWidth(anchoLinea);
+    glBegin(GL_LINE_LOOP);
+
+    GLfloat rotacionRad = Grados2Radianes(rotacionG);
+    GLfloat aperturaRad = Grados2Radianes(aperturaGrad);
+
+    glVertex2f(coorX, coorY);
+
+    for (int i = 0; i < fracCirc + 1; i++) {  // +1 para cerrar
+        glVertex2f(coorX + radio * cos(rotacionRad + aperturaRad * i / fracCirc),
+                   coorY + radio * sin(rotacionRad + aperturaRad * i / fracCirc));
+    }
+    glEnd();
+}
+
+static void
+sectorCirculoPoly(GLfloat coorX, GLfloat coorY, GLfloat radio, std::string colorHexa, GLint fracCirc, GLfloat rotacionG,
+                  GLfloat aperturaGrad) {
+    GLfloat *color = Hex2RGB(colorHexa);
+    glColor3fv(color);
+    glBegin(GL_POLYGON);
+
+    GLfloat rotacionRad = Grados2Radianes(rotacionG);
+    GLfloat aperturaRad = Grados2Radianes(aperturaGrad);
+
+    glVertex2f(coorX, coorY);
+
+    for (int i = 0; i < fracCirc + 1; i++) {  // +1 para cerrar
+        glVertex2f(coorX + radio * cos(rotacionRad + aperturaRad * i / fracCirc),
+                   coorY + radio * sin(rotacionRad + aperturaRad * i / fracCirc));
+    }
+    glEnd();
+}
+
+static void
+segmentoCirculoLinea(GLfloat coorX, GLfloat coorY, GLfloat radio, std::string colorHexa, GLint fracCirc,
+                     GLfloat anchoLinea, GLfloat rotacionG, GLfloat aperturaGrad) {
+    GLfloat *color = Hex2RGB(colorHexa);
+    glColor3fv(color);
+    glLineWidth(anchoLinea);
+    glBegin(GL_LINE_LOOP);
+
+    GLfloat rotacionRad = Grados2Radianes(rotacionG);
+    GLfloat aperturaRad = Grados2Radianes(aperturaGrad);
+
+    for (int i = 0; i < fracCirc + 1; i++) {  // +1 para cerrar
+        glVertex2f(coorX + radio * cos(rotacionRad + aperturaRad * i / fracCirc),
+                   coorY + radio * sin(rotacionRad + aperturaRad * i / fracCirc));
+    }
+    glEnd();
+}
+
+static void
+segmentoCirculoPoly(GLfloat coorX, GLfloat coorY, GLfloat radio, std::string colorHexa, GLint fracCirc,
+                    GLfloat rotacionG, GLfloat aperturaGrad) {
+    GLfloat *color = Hex2RGB(colorHexa);
+    glColor3fv(color);
+    glBegin(GL_POLYGON);
+
+    GLfloat rotacionRad = Grados2Radianes(rotacionG);
+    GLfloat aperturaRad = Grados2Radianes(aperturaGrad);
+
+
+    for (int i = 0; i < fracCirc + 1; i++) {  // +1 para cerrar
+        glVertex2f(coorX + radio * cos(rotacionRad + aperturaRad * i / fracCirc),
+                   coorY + radio * sin(rotacionRad + aperturaRad * i / fracCirc));
     }
     glEnd();
 }
