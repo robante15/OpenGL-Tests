@@ -49,10 +49,9 @@ void display(void) {
     sectorCirculoLinea(5.5, 5.5, 4, "00FF00", 15, 1, 315, 90);
     sectorCirculoPoly(-5.5, 5.5, 4, "00FF00", 15, 35, 125);
     circuloPoligono(1, 7.5, 2, "00FF00", 15);
-    circuloLineas(-7.5, 3, 2, "00FF00", 15,2);
-    segmentoCirculoPoly(-2.5,2.5,2.5,"FF0000",25,0,270);
-    segmentoCirculoLinea(3,2.5,2.5,"0000FF",25,1,180,270);
-
+    circuloLineas(-7.5, 3, 2, "00FF00", 15, 2);
+    segmentoCirculoPoly(-2.5, 2.5, 2.5, "FF0000", 25, 0, 270);
+    segmentoCirculoLinea(3, 2.5, 2.5, "0000FF", 25, 1, 180, 270);
 
     glFlush();
 
