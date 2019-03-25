@@ -6,82 +6,59 @@
 
 static GLfloat *Hex2RGB(std::string hex);
 
-static void ejercicio3(std::string colorHexa, GLfloat anchoLinea, int opcion);
-
-static void ejercicio4(std::string colorHexa, GLfloat anchoLinea, int opcion);
-
-static GLfloat *Cart2Polar(GLfloat coorX, GLfloat coorY);
-
 static GLfloat *Polar2Cart(GLfloat radio, GLfloat angle);
 
 static GLfloat Grados2Radianes(GLfloat grados);
 
-static void ejercicio5(GLfloat size, GLfloat petalos, std::string colorHexa, GLfloat anchoLinea) {
-    GLfloat radio;
-    GLfloat angle;
-    GLfloat *coordenadasXY;
+static GLfloat *Cart2Polar(GLfloat coorX, GLfloat coorY);
 
-    GLfloat *color = Hex2RGB(colorHexa);
+static void ejercicio1() {
+    GLfloat X;
+    GLfloat Y;
+    //GLfloat *coordenadasXY;
+
+    GLfloat *color = Hex2RGB("FFFFFF");
     glColor3fv(color);
-    glLineWidth(anchoLinea);
+    glLineWidth(1);
     glBegin(GL_LINE_STRIP);
 
-    for (GLfloat i = 0; i <= 360; ++i) {
-        //r=6*sen(7*anle)
-        angle = Grados2Radianes(i);
-        radio = size*sin(petalos*angle);
-        coordenadasXY = Polar2Cart(radio, angle);
-        glVertex2f(coordenadasXY[0], coordenadasXY[1]);
+    GLfloat k = 8;
+
+    for (GLfloat i = -10; i <= 10; i += 0.01) {
+        //Y=cos(k*x)*sin(kx/pi*k)
+        X = i;
+        Y = sin(k * X);
+        glVertex2f(X, Y);
     }
     glEnd();
+
 }
 
-static void ejercicio6(GLfloat size, GLfloat petalos, std::string colorHexa, GLfloat anchoLinea) {
-    GLfloat radio;
-    GLfloat angle;
-    GLfloat *coordenadasXY;
+static void ejercicio3(std::string colorHexa, GLfloat anchoLinea, int opcion);
 
-    GLfloat *color = Hex2RGB(colorHexa);
-    glColor3fv(color);
-    glLineWidth(anchoLinea);
-    glBegin(GL_LINE_STRIP);
+static void ejercicio4(std::string colorHexa, GLfloat anchoLinea, int opcion);
 
-    for (GLfloat i = 0; i <= 360; ++i) {
-        //r=6.15cos(3angle)
-        angle = Grados2Radianes(i);
-        radio = size * cos(petalos * angle);
-        coordenadasXY = Polar2Cart(radio, angle);
-        glVertex2f(coordenadasXY[0], coordenadasXY[1]);
-    }
-    glEnd();
-}
+static void ejercicio5(GLfloat size, GLfloat petalos, std::string colorHexa, GLfloat anchoLinea);
 
-static void ejercicio7(GLfloat constante, GLfloat rotacion, std::string colorHexa, GLfloat anchoLinea) {
-    GLfloat radio;
-    GLfloat angle;
-    GLfloat *coordenadasXY;
+static void ejercicio6(GLfloat size, GLfloat petalos, std::string colorHexa, GLfloat anchoLinea);
 
-    GLfloat *color = Hex2RGB(colorHexa);
-    glColor3fv(color);
-    glLineWidth(anchoLinea);
-    glBegin(GL_LINE_STRIP);
+static void ejercicio7(GLfloat constante, GLfloat rotacion, std::string colorHexa, GLfloat anchoLinea);
 
-    for (GLfloat i = 0; i <= rotacion; ++i) {
-        //r=aθ
-        angle = Grados2Radianes(i);
-        radio = constante * angle;
-        coordenadasXY = Polar2Cart(radio, angle);
-        glVertex2f(coordenadasXY[0], coordenadasXY[1]);
-    }
-    glEnd();
-}
-
+static void ejercicio8(int x1, int y1, int x2, int y2, std::string colorHexa);
 
 void display(void) {
     glClear(GL_COLOR_BUFFER_BIT);
-    ejercicio5(6, 7, "#FFFFFF", 1.0);
+    /*
+     Descomentar cada funcion para 
+     seleccionar el ejercicio correspondiente
+     */
+    //ejercicio1();
+    //ejercicio3("#FFFFFF", 1, 5);  //El ultimo valor define cual de los 6 ejercicios se va a mostrar
+    //ejercicio4("#FFFFFF", 1, 2);	//El ultimo valor define cual de los 6 ejercicios se va a mostrar
+    //ejercicio5(6, 6, "#FFFFFF", 1.0);
     //ejercicio6(6.15, 3, "#FFFFFF", 1.0);
-    //ejercicio7(0.3, 1080, "#FFFFFF", 1.0);
+    //ejercicio7(0.5, 360*3, "#FFFFFF", 1.0);
+    //ejercicio8(-10, -5, 10, 10, "#FFFFFF");
     glFlush();
 }
 
@@ -295,5 +272,132 @@ static void ejercicio4(std::string colorHexa, GLfloat anchoLinea, int opcion) {
     }
 
 
+    glEnd();
+}
+
+static void ejercicio5(GLfloat size, GLfloat petalos, std::string colorHexa, GLfloat anchoLinea) {
+    GLfloat radio;
+    GLfloat angle;
+    GLfloat *coordenadasXY;
+
+    GLfloat *color = Hex2RGB(colorHexa);
+    glColor3fv(color);
+    glLineWidth(anchoLinea);
+    glBegin(GL_LINE_STRIP);
+
+    for (GLfloat i = 0; i <= 360; ++i) {
+        //r=6*sen(7*anle)
+        angle = Grados2Radianes(i);
+        radio = size * sin(petalos * angle);
+        coordenadasXY = Polar2Cart(radio, angle);
+        glVertex2f(coordenadasXY[0], coordenadasXY[1]);
+    }
+    glEnd();
+}
+
+static void ejercicio6(GLfloat size, GLfloat petalos, std::string colorHexa, GLfloat anchoLinea) {
+    GLfloat radio;
+    GLfloat angle;
+    GLfloat *coordenadasXY;
+
+    GLfloat *color = Hex2RGB(colorHexa);
+    glColor3fv(color);
+    glLineWidth(anchoLinea);
+    glBegin(GL_LINE_STRIP);
+
+    for (GLfloat i = 0; i <= 360; ++i) {
+        //r=6.15cos(3angle)
+        angle = Grados2Radianes(i);
+        radio = size * cos(petalos * angle);
+        coordenadasXY = Polar2Cart(radio, angle);
+        glVertex2f(coordenadasXY[0], coordenadasXY[1]);
+    }
+    glEnd();
+}
+
+static void ejercicio7(GLfloat constante, GLfloat rotacion, std::string colorHexa, GLfloat anchoLinea) {
+    GLfloat radio;
+    GLfloat angle;
+    GLfloat *coordenadasXY;
+
+    GLfloat *color = Hex2RGB(colorHexa);
+    glColor3fv(color);
+    glLineWidth(anchoLinea);
+    glBegin(GL_LINE_STRIP);
+
+    for (GLfloat i = 0; i <= rotacion; ++i) {
+        //r=aθ
+        angle = Grados2Radianes(i);
+        radio = constante * angle;
+        coordenadasXY = Polar2Cart(radio, angle);
+        glVertex2f(coordenadasXY[0], coordenadasXY[1]);
+    }
+    glEnd();
+}
+
+static void ejercicio8(int x1, int y1, int x2, int y2, std::string colorHexa) {
+    GLfloat *color = Hex2RGB(colorHexa);
+    glColor3fv(color);
+    glBegin(GL_POINTS);
+
+    int dx, dy, i, e;
+    int incx, incy, inc1, inc2;
+    int x, y;
+
+    dx = x2 - x1;
+    dy = y2 - y1;
+
+    if (dx < 0) {
+        dx = -dx;
+    }
+
+    if (dy < 0) {
+        dy = -dy;
+    }
+
+    incx = 1;
+    if (x2 < x1) {
+        incx = -1;
+    }
+
+    incy = 1;
+    if (y2 < y1) {
+        incy = -1;
+    }
+
+    x = x1;
+    y = y1;
+
+    if (dx > dy) {
+        glVertex2i(x, y);
+        e = 2 * dy - dx;
+        inc1 = 2 * (dy - dx);
+        inc2 = 2 * dy;
+        for (i = 0; i < dx; i++) {
+            if (e >= 0) {
+                y += incy;
+                e += inc1;
+            } else {
+                e += inc2;
+            }
+            x += incx;
+            glVertex2i(x, y);
+        }
+    } else {
+        glVertex2i(x, y);
+        e = 2 * dx - dy;
+        inc1 = 2 * (dx - dy);
+        inc2 = 2 * dx;
+        for (i = 0; i < dy; i++) {
+            if (e >= 0) {
+                x += incx;
+                e += inc1;
+            } else {
+                e += inc2;
+            }
+            y += incy;
+            glVertex2i(x, y);
+        }
+    }
     glEnd();
 }
