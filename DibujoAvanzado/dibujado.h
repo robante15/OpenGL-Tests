@@ -143,6 +143,21 @@ circuloLineas(GLfloat coorX, GLfloat coorY, GLfloat radio, std::string colorHexa
     glEnd();
 }
 
+static void
+elipseLineas(GLfloat coorX, GLfloat coorY, GLfloat a, GLfloat b, std::string colorHexa, GLint fracCirc,
+             GLfloat anchoLinea) {
+    GLfloat *color = Hex2RGB(colorHexa);
+    glColor3fv(color);
+    glLineWidth(anchoLinea);
+    glBegin(GL_LINE_LOOP);
+
+    for (int i = 0; i < fracCirc + 1; i++) {  // +1 para cerrar
+        glVertex2f(coorX + a * cos(2.0 * M_PI * i / fracCirc),
+                   coorY + b * sin(2.0 * M_PI * i / fracCirc));
+    }
+    glEnd();
+}
+
 /*Dibuja el sector de un circulo con lineas, sus valores de entrada son:
  * coorX: Coordenada en X para la creación del objeto
  * coorY: Coordenada en Y para la creación del objeto
@@ -226,6 +241,51 @@ segmentoCirculoLinea(GLfloat coorX, GLfloat coorY, GLfloat radio, std::string co
     glEnd();
 }
 
+/*Dibuja el segmento de un circulo con lineas, sus valores de entrada son:
+ * coorX: Coordenada en X para la creación del objeto
+ * coorY: Coordenada en Y para la creación del objeto
+ * radio: Radio de la circunferencia
+ * colorHexa, el color que tendrá el objeto
+ * fracCirc: Cantidad de segmentos que tendrá el circulo
+ * anchoLinea: El grosor que tendrá la linea con la que se dibuja el circulo
+ * rotacionG: Es la rotación que tendrá el objeto
+ * aperturaGrad: Es la apertura en grados que tendrá el sector del circulo*/
+static void
+arcoCirculoLinea(GLfloat coorX, GLfloat coorY, GLfloat radio, std::string colorHexa, GLint fracCirc,
+                     GLfloat anchoLinea, GLfloat rotacionG, GLfloat aperturaGrad) {
+    GLfloat *color = Hex2RGB(colorHexa);
+    glColor3fv(color);
+    glLineWidth(anchoLinea);
+    glBegin(GL_LINE_STRIP);
+
+    GLfloat rotacionRad = Grados2Radianes(rotacionG);
+    GLfloat aperturaRad = Grados2Radianes(aperturaGrad);
+
+    for (int i = 0; i < fracCirc + 1; i++) {  // +1 para cerrar
+        glVertex2f(coorX + radio * cos(rotacionRad + aperturaRad * i / fracCirc),
+                   coorY + radio * sin(rotacionRad + aperturaRad * i / fracCirc));
+    }
+    glEnd();
+}
+
+static void
+arcoElipseLinea(GLfloat coorX, GLfloat coorY, GLfloat a,GLfloat b, std::string colorHexa, GLint fracCirc,
+                 GLfloat anchoLinea, GLfloat rotacionG, GLfloat aperturaGrad) {
+    GLfloat *color = Hex2RGB(colorHexa);
+    glColor3fv(color);
+    glLineWidth(anchoLinea);
+    glBegin(GL_LINE_STRIP);
+
+    GLfloat rotacionRad = Grados2Radianes(rotacionG);
+    GLfloat aperturaRad = Grados2Radianes(aperturaGrad);
+
+    for (int i = 0; i < fracCirc + 1; i++) {  // +1 para cerrar
+        glVertex2f(coorX + a * cos(rotacionRad + aperturaRad * i / fracCirc),
+                   coorY + b * sin(rotacionRad + aperturaRad * i / fracCirc));
+    }
+    glEnd();
+}
+
 /*Dibuja el segmento de un circulo con poligonos, sus valores de entrada son:
  * coorX: Coordenada en X para la creación del objeto
  * coorY: Coordenada en Y para la creación del objeto
@@ -274,5 +334,43 @@ static void lineStrip(GLfloat arregloPuntos[][3], int cFil, int cCol, std::strin
         std::cout << std::endl;
         glVertex3fv(vertex);
     }
+    glEnd();
+}
+
+/* Se ingresa un Array de valores y con este se va dibujando un LineStrip, sus valores son:
+ * arregloPuntos[][3]: Es el array del cual tomará los valores en X,Y,Z para dibujar el lineStrip
+ * cFil: es la cantidad de Filas que tiene el arreglo
+ * cCol: La cantidad de columnas del Array
+ * colorHexa: Color en Hexadecimal para la linea
+ * anchoLinea: Es el grosor que tendrá la linea*/
+static void lineLoop(GLfloat arregloPuntos[][3], int cFil, int cCol, std::string colorHexa, GLfloat anchoLinea) {
+    GLfloat *color = Hex2RGB(colorHexa);
+    glColor3fv(color);
+    glLineWidth(anchoLinea);
+    glBegin(GL_LINE_LOOP);
+
+
+    for (int fila = 0; fila < cFil; fila++) {
+        GLfloat vertex[3];
+        for (int columna = 0; columna < cCol; columna++) {
+            vertex[columna] = arregloPuntos[fila][columna];
+            std::cout << arregloPuntos[fila][columna];
+        }
+        std::cout << std::endl;
+        glVertex3fv(vertex);
+    }
+    glEnd();
+}
+
+static void
+linea(GLfloat coorX1, GLfloat coorY1, GLfloat coorX2, GLfloat coorY2, std::string colorHexa, GLfloat anchoLinea) {
+    GLfloat *color = Hex2RGB(colorHexa);
+    glColor3fv(color);
+    glLineWidth(anchoLinea);
+    glBegin(GL_LINES);
+
+    glVertex3f(coorX1, coorY1, 0.0);
+    glVertex3f(coorX2, coorY2, 0.0);
+
     glEnd();
 }
