@@ -1,14 +1,14 @@
-cmake_minimum_required(VERSION 2.8) #Versión mínima de cmake
+cmake_minimum_required(VERSION 2.8) #Versión mínima de cmake 
 # Project Name
-PROJECT(DibujoAvanzado)
+PROJECT(Circle_GL)
 
 #########################################################
 # INCLUYENDO LIBRERIA GLUT
 #########################################################
 find_package(GLUT REQUIRED) #buscar la libreria GlUT
-include_directories(${GLUT_INCLUDE_DIRS}) # incluir los directorios
-link_directories(${GLUT_LIBRARY_DIRS}) #Linkeo de directorios
-add_definitions(${GLUT_DEFINITIONS}) #Agregar las definiciones
+include_directories(${GLUT_INCLUDE_DIRS}) # incluir los directorios 
+link_directories(${GLUT_LIBRARY_DIRS}) #Linkeo de directorios 
+add_definitions(${GLUT_DEFINITIONS}) #Agregar las definiciones 
 #########################################################
 # INCLUYENDO LIBRERIA OPENGL
 #########################################################
@@ -17,12 +17,12 @@ include_directories(${OpenGL_INCLUDE_DIRS})
 link_directories(${OpenGL_LIBRARY_DIRS})
 add_definitions(${OpenGL_DEFINITIONS})
 #########################################################
-# Incluyendo archivos
+# Incluyendo archivos 
 #########################################################
-add_executable(DibujoAvanzado main.cpp arrays.h) # Agregando nombre del script y compilado
+add_executable(hello main.cpp) # Agregando nombre del script y compilado
 
 ########################################################
-# Linkeo de librerías
+# Linkeo de librerías 
 #########################################################
 # creación del ejecutable "hello"
-target_link_libraries(DibujoAvanzado ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} )
+ target_link_libraries(hello ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} )

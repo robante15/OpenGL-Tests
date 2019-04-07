@@ -1,98 +1,42 @@
 #include <iostream>
 #include "dibujado.h"
+#include "arrays.h"
+
+static void llanta(std::string color) {
+    circuloLineas(-6.14, -1.95, 1.8303, color, 25, 2);
+    arcoCirculoLinea(-6.14, -1.95, 1.6431, color, 25, 1, 130, 270);
+    circuloLineas(-6.14, -1.95, 1.1401, color, 25, 1);
+    circuloLineas(-6.14, -1.95, 1.2688, color, 25, 2);
+    circuloLineas(-6.14, -1.95, 0.1500, color, 25, 2);
+    arcoCirculoLinea(-6.17, -1.85, 1.9416, color, 25, 2, 4, 186.59);
+    lineStrip(array23, 5, 3, color, 2);
+    circuloLineas(-5.86, -1.68, 0.1000, color, 15, 1);
+    circuloLineas(-6.29, -1.62, 0.1000, color, 15, 1);
+    circuloLineas(-6.50, -2.08, 0.1000, color, 15, 1);
+    circuloLineas(-5.74, -2.08, 0.1000, color, 15, 1);
+    circuloLineas(-6.09, -2.33, 0.1000, color, 15, 1);
+    lineStrip(array27, 3, 3, color, 2);
+    lineStrip(array28, 3, 3, color, 2);
+    linea(-5.06, -1.53, -5.4, -1.75, color, 2);
+    linea(-5.89, -0.83, -6.09, -1.25, color, 2);
+    lineStrip(array29, 3, 3, color, 2);
+    lineStrip(array30, 3, 3, color, 2);
+    linea(-5.34, -2.81, -5.73, -2.48, color, 2);
+    lineStrip(array31, 3, 3, color, 2);
+    linea(-6.96, -2.69, -6.52, -2.51, color, 2);
+    linea(-7.25, -1.92, -6.68, -1.80, color, 2);
+    lineStrip(array32, 7, 3, color, 2);
+    lineStrip(array33, 7, 3, color, 2);
+    lineStrip(array34, 7, 3, color, 2);
+    lineStrip(array35, 7, 3, color, 2);
+    lineStrip(array36, 7, 3, color, 2);
+}
 
 void display(void) {
     std::string blanco = "#FFFFFF";
     std::string gris = "#858585";
 
     glClear(GL_COLOR_BUFFER_BIT);
-
-    GLfloat array1[7][3] = {
-            {2.67, 1.29, 0.0},
-            {2.67, 4.49, 0.0},
-            {5.85, 4.49, 0.0},
-            {5.85, 2.88, 0.0},
-            {8.57, 2.88, 0.0},
-            {8.57, 2.47, 0.0},
-            {9.68, 2.47, 0.0}
-    };
-
-    GLfloat array2[4][3] = {
-            {2.79, 4.20, 0.0},
-            {5.70, 4.20, 0.0},
-            {5.70, 3.76, 0.0},
-            {2.79, 3.76, 0.0}
-    };
-
-    GLfloat array3[4][3] = {
-            {6.16, 2.55, 0.0},
-            {8.22, 2.55, 0.0},
-            {8.22, 2.21, 0.0},
-            {6.16, 2.21, 0.0}
-    };
-
-    GLfloat array4[4][3] = {
-            {8.80, 2.15, 0.0},
-            {9.20, 2.15, 0.0},
-            {9.20, 0.22, 0.0},
-            {8.80, 0.22, 0.0}
-    };
-
-    GLfloat array5[5][3] = {
-            {-9.74, 4.22, 0.0},
-            {-6.31, 4.22, 0.0},
-            {-6.31, 3.61, 0.0},
-            {-0.04, 3.61, 0.0},
-            {-0.04, 2.54, 0.0}
-    };
-
-    GLfloat array6[3][3] = {
-            {0.29, 5.54, 0.0},
-            {0.96, 5.54, 0.0},
-            {0.96, 2.47, 0.0}
-    };
-
-    GLfloat array7[4][3] = {
-            {0.5,  5.3,  0.0},
-            {0.69, 5.3,  0.0},
-            {0.71, 2.72, 0.0},
-            {0.5,  2.72, 0.0}
-    };
-
-    GLfloat array8[4][3] = {
-            {-9.56, 3.82, 0.0},
-            {-6.61, 3.82, 0.0},
-            {-6.61, 3.40, 0.0},
-            {-9.56, 3.40, 0.0}
-    };
-
-    GLfloat array9[4][3] = {
-            {-6.07, 3.37, 0.0},
-            {-0.39, 3.37, 0.0},
-            {-0.39, 2.99, 0.0},
-            {-6.07, 2.99, 0.0}
-    };
-
-    GLfloat array10[4][3] = {
-            {-6.07, 2.69, 0.0},
-            {-4.95, 2.69, 0.0},
-            {-4.95, 2.23, 0.0},
-            {-6.07, 2.23, 0.0}
-    };
-
-    GLfloat array11[4][3] = {
-            {3.37, -0.91, 0.0},
-            {4.15, -0.91, 0.0},
-            {4.38, 0.00, 0.0},
-            {3.63, 0.00, 0.0}
-    };
-
-    GLfloat array12[4][3] = {
-            {3.70, 0.25, 0.0},
-            {4.44, 0.25, 0.0},
-            {4.41, 0.12, 0.0},
-            {3.65, 0.12, 0.0}
-    };
 
     //Lineas del suelo
     linea(-8.75, -4.64, 4.98, -4.64, blanco, 2);
@@ -151,12 +95,45 @@ void display(void) {
     arcoCirculoLinea(0.14, 4.87, 1.02956, blanco, 25, 2, 80.5, 88.23);
 
     /*-------------- Carro ---------------*/
-    lineLoop(array11, 4, 3, blanco, 1);
-    linea(4.35,-0.14,3.59,-0.14,blanco,1);
-    lineLoop(array12, 4, 3, blanco, 1);
+    lineLoop(array11, 4, 3, blanco, 2);
+    linea(4.35, -0.14, 3.59, -0.14, blanco, 2);
+    lineLoop(array12, 4, 3, blanco, 2);
 
-    circuloLineas(-6.14,-1.95,1.8303,blanco,25,2);
-    arcoCirculoLinea(-6.14,-1.95,1.6431,blanco,25,2,130,270);
+    //Llantas
+    llanta(blanco);
+    linea(-4.23, -1.73, -4.14, -3.08, blanco, 2);
+    linea(-8.08, -2.19, -8.03, -2.74, blanco, 2);
+    glTranslatef(12.35,0,0);
+    llanta(blanco);
+    linea(-8.08, -2.19, -8.03, -3.00, blanco, 2);
+    linea(-4.23, -1.73, -4.14, -3.00, blanco, 2);
+    glTranslatef(-12.35,0,0);
+    linea(4.15,-3.05,4.63,-2.94,blanco,2);
+
+    linea(-4.64, -3.06, 4.17, -3.06, blanco, 2);
+    lineStrip(array14, 45, 3, blanco, 2);
+    lineLoop(array15, 27, 3, blanco, 2);
+    lineStrip(array16, 10, 3, blanco, 1);
+    lineStrip(array17, 4, 3, blanco, 1);
+    lineStrip(array18, 3, 3, blanco, 1);
+    lineStrip(array19, 4, 3, blanco, 1);
+    lineStrip(array20, 8, 3, blanco, 1);
+    linea(-6.41, 0.917, -3.16, 0.95, blanco, 1);
+    lineStrip(array21, 25, 3, blanco, 1);
+    linea(2.64, 0.64, 6.8, 0.5, blanco, 1);
+    lineStrip(array22, 8, 3, blanco, 1);
+    linea(-9.21, -1.64, -8.45, -1.93, blanco, 1);
+    linea(-2.9, 0.99, -2.52, 1.89, blanco, 1);
+    linea(-3.13, 1.01, -2.73, 1.89, blanco, 1);
+    lineStrip(array24, 3, 3, blanco, 1);
+    linea(-2.88, -2.3, 2.89, -2.57, blanco, 1);
+    linea(-1.72, -0.83, 2.61, -0.8, blanco, 1);
+    linea(8.55153, -1.68057, 9.27972, -0.52142, blanco, 1);
+    linea(7.79363, -0.65517, 8.47723, -0.25392, blanco, 1);
+    lineStrip(array25, 4, 3, blanco, 1);
+    linea(-1.14, 0.56, 2.27, 0.53, blanco, 1);
+    lineLoop(array26, 6, 3, blanco, 2);
+    lineStrip(array37, 3, 3, blanco, 1);
 
     glEnd();
     glFlush();
