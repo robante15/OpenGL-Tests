@@ -46,15 +46,41 @@ static void ejercicio7(GLfloat constante, GLfloat rotacion, std::string colorHex
 
 static void ejercicio8(int x1, int y1, int x2, int y2, std::string colorHexa);
 
+static void plano(GLfloat grid, std::string colorHexa) {
+    GLfloat *color = Hex2RGB(colorHexa);
+    glColor3fv(color);
+    glLineWidth(1);
+    glBegin(GL_LINES);
+
+
+    glVertex2f(0, -10);
+    glVertex2f(0,  10);
+
+    glVertex2f(10, 0);
+    glVertex2f(-10, 0);
+
+    for (GLfloat i = -10; i <= 10; ++i) {
+
+        glVertex2f(i, -1*grid);
+        glVertex2f(i, grid);
+
+        glVertex2f(grid, i);
+        glVertex2f(-1*grid, i);
+    }
+
+    glEnd();
+}
+
 void display(void) {
     glClear(GL_COLOR_BUFFER_BIT);
+    plano(0.1, "#444444");
     /*
      Descomentar cada funcion para 
      seleccionar el ejercicio correspondiente
      */
     //ejercicio1();
     //ejercicio3("#FFFFFF", 1, 5);  //El ultimo valor define cual de los 6 ejercicios se va a mostrar
-    //ejercicio4("#FFFFFF", 1, 2);	//El ultimo valor define cual de los 6 ejercicios se va a mostrar
+    ejercicio4("#FFFFFF", 1, 1);	//El ultimo valor define cual de los 6 ejercicios se va a mostrar
     //ejercicio5(6, 6, "#FFFFFF", 1.0);
     //ejercicio6(6.15, 3, "#FFFFFF", 1.0);
     //ejercicio7(0.5, 360*3, "#FFFFFF", 1.0);
