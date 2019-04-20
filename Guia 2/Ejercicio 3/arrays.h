@@ -210,3 +210,63 @@ GLfloat EspejoMuebleIzq[4][3] = {
 
 
 // ------------------- Materiales ---------------------//
+
+GLfloat amb_rojoOscuro[] = {1.000000, 1.000000, 1.000000};
+GLfloat dif_rojoOscuro[] = {0.800000, 0.022666, 0.009034};
+GLfloat spec_rojoOscuro[] = {0.500000, 0.500000, 0.500000};
+GLfloat shine_rojoOscuro[] = {27.8974f};
+
+GLfloat amb_rojoClaro[] = {1.000000, 1.000000, 1.000000};
+GLfloat dif_rojoClaro[] = {1.000000, 0.027068, 0.010435};
+GLfloat spec_rojoClaro[] = {0.500000, 0.500000, 0.500000};
+GLfloat shine_rojoClaro[] = {27.8974f};
+
+GLfloat amb_MarronClaro[] = {1.000000, 1.000000, 1.000000};
+GLfloat dif_MarronClaro[] = {0.195987, 0.062046, 0.035737};
+GLfloat spec_MarronClaro[] = {0.500000, 0.500000, 0.500000};
+GLfloat shine_MarronClaro[] = {27.8974f};
+
+GLfloat amb_Marron[] = {1.000000, 1.000000, 1.000000};
+GLfloat dif_Marron[] = {0.063720, 0.022245, 0.013648};
+GLfloat spec_Marron[] = {0.500000, 0.500000, 0.500000};
+GLfloat shine_Marron[] = {27.8974f};
+
+GLfloat amb_Morado[] = {1.000000, 1.000000, 1.000000};
+GLfloat dif_Morado[] = {0.097936, 0.075452, 0.496922};
+GLfloat spec_Morado[] = {0.500000, 0.500000, 0.500000};
+GLfloat shine_Morado[] = {27.8974f};
+
+GLfloat amb_Lima[] = {1.000000, 1.000000, 1.000000};
+GLfloat dif_Lima[] = {0.939978, 1.000000, 0.355009};
+GLfloat spec_Lima[] = {0.460681, 0.500000, 0.098525};
+GLfloat shine_Lima[] = {27.8974f};
+
+GLfloat amb_Blanco[] = {1.000000, 1.000000, 1.000000};
+GLfloat dif_Blanco[] = {1.000000, 1.000000, 1.000000};
+GLfloat spec_Blanco[] = {0.632296, 0.632296, 0.632296};
+GLfloat shine_Blanco[] = {1.00};
+
+GLfloat amb_GrisOscuro[] = {1.000000, 1.000000, 1.000000};
+GLfloat dif_GrisOscuro[] = {0.090837, 0.090837, 0.090837};
+GLfloat spec_GrisOscuro[] = {0.632296, 0.632296, 0.632296};
+GLfloat shine_GrisOscuro[] = {27.8974f};
+
+GLfloat amb_GrisClaro[] = {1.000000, 1.000000, 1.000000};
+GLfloat dif_GrisClaro[] = {0.334323, 0.334323, 0.334323};
+GLfloat spec_GrisClaro[] = {0.632296, 0.632296, 0.632296};
+GLfloat shine_GrisClaro[] = {27.8974f};
+
+GLfloat amb_CasiNegro[] = {1.000000, 1.000000, 1.000000};
+GLfloat dif_CasiNegro[] = {0.031063, 0.031063, 0.031063};
+GLfloat spec_CasiNegro[] = {0.632296, 0.632296, 0.632296};
+GLfloat shine_CasiNegro[] = {75.00};
+
+GLfloat amb_GrisMarron[] = {1.000000, 1.000000, 1.000000};
+GLfloat dif_GrisMarron[] = {0.334322, 0.317228, 0.269055};
+GLfloat spec_GrisMarron[] = {0.632296, 0.632296, 0.632296};
+GLfloat shine_GrisMarron[] = {27.8974f};
+
+GLfloat amb_MarronOscuro[] = {1.000000, 1.000000, 1.000000};
+GLfloat dif_MarronOscuro[] = {0.069978, 0.024466, 0.000000};
+GLfloat spec_MarronOscuro[] = {0.632296, 0.632296, 0.632296};
+GLfloat shine_MarronOscuro[] = {27.8974f};

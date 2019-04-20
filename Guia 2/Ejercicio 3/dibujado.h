@@ -4,6 +4,7 @@
 #include <math.h>
 #include <cstring>
 
+
 //Ayuda a la converción de Hexadecimal a Decimal, ya que analiza los caracteres y los convierte en numero
 int charHec2Dec(char caracter) {
     if (isdigit(caracter))
@@ -361,6 +362,28 @@ static void lineLoop(GLfloat arregloPuntos[][3], int cFil, int cCol, std::string
     }
     glEnd();
 }
+
+static void ObjectPoly(GLfloat arregloPuntos[][3], int cFil, GLfloat mat_ambient[], GLfloat mat_diffuse[], GLfloat mat_specular[], GLfloat shine[]) {
+    glBegin(GL_POLYGON);
+
+    glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, shine);
+
+    for (int fila = 0; fila < cFil; fila++) {
+        GLfloat vertex[3];
+        for (int columna = 0; columna < 3; columna++) {
+            vertex[columna] = arregloPuntos[fila][columna];
+            std::cout << arregloPuntos[fila][columna];
+        }
+        std::cout << std::endl;
+        glVertex3fv(vertex);
+    }
+    glEnd();
+}
+
+
 
 static void
 linea(GLfloat coorX1, GLfloat coorY1, GLfloat coorX2, GLfloat coorY2, std::string colorHexa, GLfloat anchoLinea) {

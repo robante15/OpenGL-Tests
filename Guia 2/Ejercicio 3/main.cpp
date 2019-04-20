@@ -4,42 +4,41 @@
 
 
 void display(void) {
-    std::string blanco = "#FFFFFF";
-    std::string gris = "#858585";
-
     glClear(GL_COLOR_BUFFER_BIT);
 
-    lineLoop(array1, 4,3,"FFFFFF",1);
-    lineLoop(array2, 4,3,"FFFFFF",1);
-    lineLoop(array3, 4,3,"FFFFFF",1);
-    lineLoop(array4, 4,3,"FFFFFF",1);
-    lineLoop(sabana, 4,3,"FFFFFF",1);
-    lineLoop(almohadaDer, 4,3,"FFFFFF",1);
-    lineLoop(almohadaIzq, 4,3,"FFFFFF",1);
-    lineLoop(visorLampara, 4,3,"FFFFFF",1);
-    lineLoop(gabetaSupMesitaDer, 4,3,"FFFFFF",1);
-    lineLoop(gabetaInfMesitaDer, 4,3,"FFFFFF",1);
-    lineLoop(marcoReloj, 4,3,"FFFFFF",1);
-    lineLoop(centroReloj, 4,3,"FFFFFF",1);
-    lineLoop(ACFrontal, 4,3,"FFFFFF",1);
-    lineLoop(ACSuperior, 4,3,"FFFFFF",1);
-    lineLoop(ACCostado, 4,3,"FFFFFF",1);
-    lineLoop(ACInferior, 4,3,"FFFFFF",1);
-    lineLoop(MarcoCuadro, 4,3,"FFFFFF",1);
-    lineLoop(InteriorCuadro, 4,3,"FFFFFF",1);
-    lineLoop(FondoVentana, 4,3,"FFFFFF",1);
-    lineLoop(MarcoSuperiorVentana, 4,3,"FFFFFF",1);
-    lineLoop(MarcoDerechoVentana, 4,3,"FFFFFF",1);
-    lineLoop(MarcoInferiorVentana, 4,3,"FFFFFF",1);
+    ObjectPoly(array1, 4, amb_rojoOscuro,dif_rojoOscuro,spec_rojoOscuro,shine_rojoOscuro);
+    ObjectPoly(array2, 4, amb_Marron,dif_Marron,spec_Marron,shine_Marron);
+    ObjectPoly(array3, 4, amb_MarronClaro,dif_MarronClaro,spec_MarronClaro,shine_MarronClaro);
+    ObjectPoly(array4, 4, amb_rojoClaro,dif_rojoClaro,spec_rojoClaro,shine_rojoClaro);
+    ObjectPoly(sabana, 4, amb_Morado,dif_Morado,spec_Morado,shine_Morado);
+    ObjectPoly(almohadaDer, 4, amb_Lima,dif_Lima,spec_Lima,shine_Lima);
+    ObjectPoly(almohadaIzq, 4, amb_Lima,dif_Lima,spec_Lima,shine_Lima);
+    ObjectPoly(visorLampara, 4, amb_rojoClaro,dif_rojoClaro,spec_rojoClaro,shine_rojoClaro);
+    ObjectPoly(gabetaSupMesitaDer, 4, amb_MarronClaro,dif_MarronClaro,spec_MarronClaro,shine_MarronClaro);
+    ObjectPoly(gabetaInfMesitaDer, 4, amb_MarronClaro,dif_MarronClaro,spec_MarronClaro,shine_MarronClaro);
+    ObjectPoly(marcoReloj, 4, amb_GrisOscuro,dif_GrisOscuro,spec_GrisOscuro,shine_GrisOscuro);
+    ObjectPoly(centroReloj, 4, amb_Blanco,dif_Blanco,spec_Blanco,shine_Blanco);
+    ObjectPoly(ACFrontal, 4, amb_GrisClaro,dif_GrisClaro,spec_GrisClaro,shine_GrisClaro);
+    ObjectPoly(ACSuperior, 4, amb_GrisOscuro,dif_GrisOscuro,spec_GrisOscuro,shine_GrisOscuro);
+    ObjectPoly(ACInferior, 4, amb_GrisOscuro,dif_GrisOscuro,spec_GrisOscuro,shine_GrisOscuro);
+    ObjectPoly(ACCostado, 4, amb_CasiNegro,dif_CasiNegro,spec_CasiNegro,shine_CasiNegro);
+    ObjectPoly(FondoVentana, 4, amb_Blanco,dif_Blanco,spec_Blanco,shine_Blanco);
+    ObjectPoly(MarcoSuperiorVentana, 4, amb_GrisMarron,dif_GrisMarron,spec_GrisMarron,shine_GrisMarron);
+    ObjectPoly(MarcoInferiorVentana, 4, amb_GrisMarron,dif_GrisMarron,spec_GrisMarron,shine_GrisMarron);
+    ObjectPoly(TopMuebleIzq, 4, amb_MarronClaro,dif_MarronClaro,spec_MarronClaro,shine_MarronClaro);
+    ObjectPoly(FrontalMuebleIzq, 4, amb_MarronClaro,dif_MarronClaro,spec_MarronClaro,shine_MarronClaro);
+    ObjectPoly(LateralMuebleIzq, 4, amb_MarronOscuro,dif_MarronOscuro,spec_MarronOscuro,shine_MarronOscuro);
+    ObjectPoly(PuertaIzqMuebleIzq, 4, amb_MarronOscuro,dif_MarronOscuro,spec_MarronOscuro,shine_MarronOscuro);
+    ObjectPoly(PuertaMidMuebleIzq, 4, amb_MarronOscuro,dif_MarronOscuro,spec_MarronOscuro,shine_MarronOscuro);
+    ObjectPoly(PuertaDerMuebleIzq, 4, amb_MarronOscuro,dif_MarronOscuro,spec_MarronOscuro,shine_MarronOscuro);
+    ObjectPoly(MarcoEspejoMuebleIzq, 4, amb_MarronClaro,dif_MarronClaro,spec_MarronClaro,shine_MarronClaro);
+    ObjectPoly(EspejoMuebleIzq, 4, amb_Blanco,dif_Blanco,spec_Blanco,shine_Blanco);
+    /*
+    ObjectPoly(MarcoCuadro, 4,3,"FFFFFF",1);
+    ObjectPoly(InteriorCuadro, 4,3,"FFFFFF",1);
+    ObjectPoly(MarcoDerechoVentana, 4,3,"FFFFFF",1);
 
-    lineLoop(TopMuebleIzq, 4,3,"FFFFFF",1);
-    lineLoop(FrontalMuebleIzq, 4,3,"FFFFFF",1);
-    lineLoop(LateralMuebleIzq, 4,3,"FFFFFF",1);
-    lineLoop(PuertaIzqMuebleIzq, 4,3,"FFFFFF",1);
-    lineLoop(PuertaMidMuebleIzq, 4,3,"FFFFFF",1);
-    lineLoop(PuertaDerMuebleIzq, 4,3,"FFFFFF",1);
-    lineLoop(MarcoEspejoMuebleIzq, 4,3,"FFFFFF",1);
-    lineLoop(EspejoMuebleIzq, 4,3,"FFFFFF",1);
+    */
 
 
     glEnd();
@@ -48,6 +47,13 @@ void display(void) {
 }
 
 void init(void) {
+    GLfloat light_position[4] = {5.0, 5.0, 5.0, 0.0};
+    glEnable(GL_LIGHTING); //activa la fuente de luz
+    glEnable(GL_LIGHT0); //Activamos las luces en 0
+    glDepthFunc(GL_LESS); //comparación de profundidad
+    glEnable(GL_DEPTH_TEST); //activa GL_DEPTH_TES
+    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(-10.0, 10.0, -10.0, 10.0, -10.0, 10.0);
