@@ -8,11 +8,23 @@
 // Initialize the OpenGL window
 void init(void)
 {
+    GLfloat light_position[4] = {5.0, 5.0, 5.0, 0.0};
 
-    glClearColor (0.0, 0.0, 0.0, 0.0); // Clear the color
+    //GLfloat light_position[] = {5.0, 5.0, 5.0, 0.0};
+
+    glEnable(GL_LIGHTING); //activa la fuente de luz
+    glEnable(GL_LIGHT0); //Activamos las luces en 0
+    glDepthFunc(GL_LESS); //comparación de profundidad
+    glEnable(GL_DEPTH_TEST); //activa GL_DEPTH_TES
+    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+    // Queremos que se dibujen las caras frontales
+    // y con un color solido de relleno.
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+    /*glClearColor (0.0, 0.0, 0.0, 0.0); // Clear the color
     glShadeModel (GL_FLAT); // Set the shading model to GL_FLAT
     glEnable (GL_LINE_SMOOTH);
-    glHint(GL_LINE_SMOOTH_HINT, GL_NICEST); // Set Line Antialiasing
+    glHint(GL_LINE_SMOOTH_HINT, GL_NICEST); // Set Line Antialiasing*/
 
 }
 
@@ -30,14 +42,14 @@ void display(void)
     PlanoCarte();
 
 
-    generadorObjetos(techoVertices,techoFaces,6);
-    generadorObjetos(lamparaTechoVertices,lamparaTechoFaces,1);
-    generadorObjetos(paredIzquierdaVertices, paredIzquierdaFaces, 6);
-    generadorObjetos(paredFondoVertices, paredFondoFaces, 6);
-    generadorObjetos(paredDerechaVertices, paredDerechaFaces, 6);
-    generadorObjetos(sueloVertices, sueloFaces, 6);
-    generadorObjetos(interIzqVertices, interIzqFaces, 6);
-    generadorObjetos(interDerVertices, interDerFaces, 6);
+    generadorObjetos(techoVertices,techoFaces,6,amb_GrisClaro,dif_GrisClaro,spec_GrisClaro,shine_GrisClaro,emi_nada);
+    generadorObjetos(lamparaTechoVertices,lamparaTechoFaces,1,amb_GrisClaro,dif_GrisClaro,spec_GrisClaro,shine_GrisClaro,emi_brillante);
+    generadorObjetos(paredDerechaVertices, paredDerechaFaces, 6,amb_rojo,dif_rojo,spec_rojo,shine_rojo,emi_nada);
+    generadorObjetos(paredFondoVertices, paredFondoFaces, 6,amb_GrisClaro,dif_GrisClaro,spec_GrisClaro,shine_GrisClaro,emi_nada);
+    generadorObjetos(paredIzquierdaVertices, paredIzquierdaFaces, 6,amb_verde,dif_verde,spec_verde,shine_verde,emi_nada);
+    generadorObjetos(sueloVertices, sueloFaces, 6,amb_GrisClaro,dif_GrisClaro,spec_GrisClaro,shine_GrisClaro,emi_nada);
+    generadorObjetos(interIzqVertices, interIzqFaces, 6,amb_GrisClaro,dif_GrisClaro,spec_GrisClaro,shine_GrisClaro,emi_nada);
+    generadorObjetos(interDerVertices, interDerFaces, 6,amb_GrisClaro,dif_GrisClaro,spec_GrisClaro,shine_GrisClaro,emi_nada);
 
     glPopMatrix(); 		// Don't forget to pop the Matrix
     glutSwapBuffers();
