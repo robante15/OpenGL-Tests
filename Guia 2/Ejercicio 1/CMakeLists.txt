@@ -19,7 +19,7 @@ add_definitions(${OpenGL_DEFINITIONS})
 #########################################################
 # Incluyendo archivos 
 #########################################################
-add_executable(hello main.cpp camera.h dibujos.h dibujado.h) # Agregando nombre del script y compilado
+add_executable(hello main.cpp camera.h objetos.h dibujado.h) # Agregando nombre del script y compilado
 
 ########################################################
 # Linkeo de librerías 

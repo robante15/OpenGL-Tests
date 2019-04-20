@@ -162,3 +162,12 @@ GLint interDerFaces [6][4] = {
         {3,7,5,1},
         {8,4,2,6},
 };
+
+
+
+// ----------------- MATERIALES -----------------//
+
+GLfloat amb_GrisClaro[] = {1.000000, 1.000000, 1.000000};
+GLfloat dif_GrisClaro[] = {0.334323, 0.334323, 0.334323};
+GLfloat spec_GrisClaro[] = {0.632296, 0.632296, 0.632296};
+GLfloat shine_GrisClaro[] = {27.8974f};
