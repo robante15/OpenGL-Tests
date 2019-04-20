@@ -27,12 +27,12 @@ void canasta(float radio, int numPuntos) {
 
     for (int i = 0; i <= numPuntos; i++) {
         float Angulo = i * (2.0 * M_PI / numPuntos);
-        float X = 87-cos(Angulo) * radio;
+        float X = 87 - cos(Angulo) * radio;
         float Y = sin(Angulo) * radio;
         glVertex2f(X, Y);
 
         float Angulo2 = (i + 1) * (2.0 * M_PI / numPuntos);
-        float X2 = 87-cos(Angulo2) * radio;
+        float X2 = 87 - cos(Angulo2) * radio;
         float Y2 = sin(Angulo2) * radio;
         glVertex2f(X2, Y2);
     }
@@ -44,35 +44,35 @@ void canasta2(float radio, int numPuntos) {
 
     for (int i = 0; i <= numPuntos; i++) {
         float Angulo = i * (2.0 * M_PI / numPuntos);
-        float X = -87-cos(Angulo) * radio;
+        float X = -87 - cos(Angulo) * radio;
         float Y = sin(Angulo) * radio;
         glVertex2f(X, Y);
 
         float Angulo2 = (i + 1) * (2.0 * M_PI / numPuntos);
-        float X2 = -87-cos(Angulo2) * radio;
+        float X2 = -87 - cos(Angulo2) * radio;
         float Y2 = sin(Angulo2) * radio;
         glVertex2f(X2, Y2);
     }
 }
 
-void semiCirculo(float radio,int numPuntos) {
+void semiCirculo(float radio, int numPuntos) {
 
-    for (int i = 0; i < numPuntos; i++){
+    for (int i = 0; i < numPuntos; i++) {
         glBegin(GL_POINTS);
-        float angulo1 = i * (0.5*M_PI/1000);
-        float angulo2 = i * (-0.5*M_PI/1000);
-        float x = -cos (angulo1)*50;
-        float y = -sin (angulo2)*50;
-        glVertex3f(x,y,0.0f);
+        float angulo1 = i * (0.5 * M_PI / 1000);
+        float angulo2 = i * (-0.5 * M_PI / 1000);
+        float x = -cos(angulo1) * 50;
+        float y = -sin(angulo2) * 50;
+        glVertex3f(x, y, 0.0f);
         glEnd();
     }
 
- /*for(int i = 0; i <= numPuntos; i++){
-		float Angulo = i * (2.0*M_PI/numPuntos);
-		float X = cos( Angulo )*radio;
-		float Y = sin( Angulo )*radio;
-		glVertex2f(X,Y);
-	}*/
+    /*for(int i = 0; i <= numPuntos; i++){
+           float Angulo = i * (2.0*M_PI/numPuntos);
+           float X = cos( Angulo )*radio;
+           float Y = sin( Angulo )*radio;
+           glVertex2f(X,Y);
+       }*/
 }
 
 void display(void) {
@@ -115,7 +115,7 @@ void display(void) {
     glVertex2f(-90.0f, -5.0f);
     glVertex2f(-90.0f, 5.0f);
 
-    canasta2(3,35);
+    canasta2(3, 35);
 
     //Area derecha
     glVertex2f(100.0f, 80.0f);
@@ -135,7 +135,7 @@ void display(void) {
 
     glVertex2f(90.0f, 5.0f);
     glVertex2f(90.0f, -5.0f);
-    canasta(3,35);
+    canasta(3, 35);
 
     glEnd();
     glFlush();

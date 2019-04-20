@@ -108,7 +108,7 @@ int main(int argc, char **argv) {
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
     glutInitWindowSize(800, 800);
     glutInitWindowPosition(100, 100);
-    glutCreateWindow("-- Ejemplo Circulo --");
+    glutCreateWindow("-- Ejercicio 1 --");
     //std::cout << argc << std::endl;
     init();
     glutDisplayFunc(display);

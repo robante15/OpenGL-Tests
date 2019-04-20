@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
     glutInitWindowSize(800, 800);
     glutInitWindowPosition(300, 500);
-    glutCreateWindow("Ejercicio 5");
+    glutCreateWindow("---- Ejercicio 5 -----");
     init();
     glutDisplayFunc(display);
     glutMainLoop();

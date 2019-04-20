@@ -1,4 +1,3 @@
-
 cmake_minimum_required(VERSION 2.8) #Versión mínima de cmake
 # Project Name
 PROJECT(Circle_GL)
@@ -20,10 +19,10 @@ add_definitions(${OpenGL_DEFINITIONS})
 #########################################################
 # Incluyendo archivos
 #########################################################
-add_executable(hello main.cpp) # Agregando nombre del script y compilado
+add_executable(tractor main.cpp dibujado.h) # Agregando nombre del script y compilado
 
 ########################################################
 # Linkeo de librerías
 #########################################################
 # creación del ejecutable "hello"
-target_link_libraries(hello ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} )
+target_link_libraries(tractor ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} )
