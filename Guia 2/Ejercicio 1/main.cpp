@@ -9,6 +9,7 @@
 void init(void)
 {
     GLfloat light_position[4] = {5.0, 5.0, 5.0, 0.0};
+
     glEnable(GL_LIGHTING); //activa la fuente de luz
     glEnable(GL_LIGHT0); //Activamos las luces en 0
     glDepthFunc(GL_LESS); //comparación de profundidad
@@ -16,10 +17,10 @@ void init(void)
     glLightfv(GL_LIGHT0, GL_POSITION, light_position);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-    glClearColor (0.0, 0.0, 0.0, 0.0); // Clear the color
+    /*glClearColor (0.0, 0.0, 0.0, 0.0); // Clear the color
     glShadeModel (GL_FLAT); // Set the shading model to GL_FLAT
     glEnable (GL_LINE_SMOOTH);
-    glHint(GL_LINE_SMOOTH_HINT, GL_NICEST); // Set Line Antialiasing
+    glHint(GL_LINE_SMOOTH_HINT, GL_NICEST); // Set Line Antialiasing*/
 
 }
 

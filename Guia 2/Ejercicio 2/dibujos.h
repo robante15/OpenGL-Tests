@@ -153,3 +153,25 @@ GLint interDerFaces [6][4] = {
         {3,7,5,1},
         {8,4,2,6},
 };
+
+
+// ----------------- MATERIALES -----------------//
+
+GLfloat amb_GrisClaro[] = {0.7f, 0.7f, 0.7f, 1.0f};
+GLfloat dif_GrisClaro[] = {0.8f, 0.8f, 0.8f, 1.0f};
+GLfloat spec_GrisClaro[] = {1.0f, 1.0f, 1.0f, 1.0f};
+GLfloat shine_GrisClaro[] = {100.0f};
+
+GLfloat emi_nada[] = {0.0,0.0,0.0,0.0};
+GLfloat emi_brillante[] = {1,1,1,1};
+
+
+GLfloat amb_verde[] = {1.000000, 1.000000, 1.000000};
+GLfloat dif_verde[] = {0.000000, 0.650394, 0.000000};
+GLfloat spec_verde[] = {0.627297, 0.627297, 0.627297};
+GLfloat shine_verde[] = {100.0f};
+
+GLfloat amb_rojo[] = {1.000000, 1.000000, 1.000000};
+GLfloat dif_rojo[] = {1.000000, 0.000000, 0.000000};
+GLfloat spec_rojo[] = {0.627297, 0.627297, 0.627297};
+GLfloat shine_rojo[] = {100.0f};

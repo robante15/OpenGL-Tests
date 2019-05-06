@@ -338,13 +338,13 @@ static void lineStrip(GLfloat arregloPuntos[][3], int cFil, int cCol, std::strin
 }
 
 static void generadorObjetos(GLfloat verticesArray[][3], GLint faces[][4], int fFil, GLfloat mat_ambient[], GLfloat mat_diffuse[], GLfloat mat_specular[], GLfloat shine[]) {
-
     glBegin(GL_QUADS);
 
     glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
     glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
     glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
     glMaterialfv(GL_FRONT, GL_SHININESS, shine);
+
 
     for (int filas = 0; filas < fFil; ++filas) {
         GLfloat vertex[3];
