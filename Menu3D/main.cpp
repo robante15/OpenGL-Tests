@@ -19,12 +19,17 @@ void init(void) {
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
+/*void posicion_raton (int x, int y){
+    pos_x = ()
+}*/
+
+
 void reshape(int w, int h) {
     glViewport(0, 0, (GLsizei) w, (GLsizei) h);
     glMatrixMode(GL_PROJECTION);
     menu_opciones();
     glLoadIdentity();
-    glOrtho(-300, 300, -300, 300, -300, 300);
+    glOrtho(-30, 30, -30, 30, -30, 30);
     // Activamos la matriz de modelado/visionado.
     glMatrixMode(GL_MODELVIEW);
     // "Limpiamos" la matriz
@@ -78,12 +83,12 @@ static void display(void) {
     glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
 
     glPushMatrix();
-    glutSolidSphere(100, 160, 160);
+    //glutSolidSphere(100, 160, 160);
     glPopMatrix();
 
     glPushMatrix();
     glTranslatef(25, 150, 0);
-    glutSolidTeapot(160);
+    //glutSolidTeapot(160);
     glPopMatrix();
 
     /*glMatrixMode(GL_MODELVIEW_MATRIX);
