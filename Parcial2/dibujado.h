@@ -338,10 +338,11 @@ static void lineStrip(GLfloat arregloPuntos[][3], int cFil, int cCol, std::strin
 }
 
 
-
-static void generadorObjetos(GLfloat verticesArray[][3], GLint faces[][4], int fFil, GLfloat mat_ambient[], GLfloat mat_diffuse[], GLfloat mat_specular[], GLfloat shine[]) {
+static void
+generadorObjetos(GLfloat verticesArray[][3], GLint faces[][4], int fFil, GLfloat mat_ambient[], GLfloat mat_diffuse[],
+                 GLfloat mat_specular[], GLfloat shine[]) {
     glPushMatrix();
-    glBegin(GL_QUADS);
+    glBegin(GL_POLYGON);
 
 
     glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
@@ -364,7 +365,9 @@ static void generadorObjetos(GLfloat verticesArray[][3], GLint faces[][4], int f
         //std::cout << std::endl << std::endl;
         //glVertex3fv(vertex);
     }
+    glFlush();
     glEnd();
+
 }
 
 /*static void generadorCubosVertices(GLfloat arregloPuntos[][3], int cFil, int cCol) {
@@ -423,30 +426,41 @@ linea(GLfloat coorX1, GLfloat coorY1, GLfloat coorX2, GLfloat coorY2, std::strin
     glEnd();
 }
 
-void setlight(){
-    //here you set the lights and parameters, example with one light
-    GLfloat light_position[4] = {-10.0, 10.0, 15.0, 1.0};
-    GLfloat LightAmbient[] = { 0.1f, 0.1f, 0.05f, 1.0f };
-    GLfloat LightEmission[] = { 1.0f, 1.0f, 0.8f, 1.0f };
-    GLfloat LightDiffuse[] = { 1.0f, 1.0f, 0.8f, 1.0f };
-    GLfloat LightSpecular[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-    //GLfloat LightDirection[]={-0.5f, -0.5f, -0.5f};
+void setlight() {
+    GLfloat mat_specular[] = {1.0, 1.0, 1.0, 1.0};
+    GLfloat mat_shininess[] = {50.0};
+    GLfloat light_position[] = {-10.0, 10.0, 15.0, 1.0};
+    glClearColor(0.0, 0.0, 0.0, 0.0);
+    glShadeModel(GL_SMOOTH);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
     glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-    glLightfv(GL_LIGHT0, GL_AMBIENT, LightAmbient);
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, LightDiffuse);
-    glLightfv(GL_LIGHT0, GL_SPECULAR, LightSpecular);
-    //glLightfv(GL_LIGHT0, GL_POSITION, LightDirection);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
+    glEnable(GL_DEPTH_TEST);
+    /* //here you set the lights and parameters, example with one light
+     GLfloat light_position[4] = {-10.0, 10.0, 15.0, 1.0};
+     GLfloat LightAmbient[] = { 0.1f, 0.1f, 0.05f, 1.0f };
+     GLfloat LightEmission[] = { 1.0f, 1.0f, 0.8f, 1.0f };
+     GLfloat LightDiffuse[] = { 1.0f, 1.0f, 0.8f, 1.0f };
+     GLfloat LightSpecular[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+     //GLfloat LightDirection[]={-0.5f, -0.5f, -0.5f};
+     glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+     glLightfv(GL_LIGHT0, GL_AMBIENT, LightAmbient);
+     glLightfv(GL_LIGHT0, GL_DIFFUSE, LightDiffuse);
+     glLightfv(GL_LIGHT0, GL_SPECULAR, LightSpecular);
+     //glLightfv(GL_LIGHT0, GL_POSITION, LightDirection);
+     glEnable(GL_LIGHTING);
+     glEnable(GL_LIGHT0);*/
 }
 
-void setmaterial(){
+void setmaterial() {
     //here you set materials, you must declare each one of the colors global or locally like this:
-    float MatAmbient[] = { 0.1f, 0.1f, 0.1f, 1.0f };
-    float MatDiffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-    float MatSpecular[] = { 0.1f, 0.1f, 0.0f, 0.1f };
+    float MatAmbient[] = {0.1f, 0.1f, 0.1f, 1.0f};
+    float MatDiffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};
+    float MatSpecular[] = {0.1f, 0.1f, 0.0f, 0.1f};
     float MatShininess = 60;
-    float black[] = {0.0f,0.0f,0.0f,1.0f};
+    float black[] = {0.0f, 0.0f, 0.0f, 1.0f};
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, MatAmbient);
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, MatDiffuse);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, MatSpecular);
