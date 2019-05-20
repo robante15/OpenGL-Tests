@@ -42,14 +42,18 @@ void display(void)
     PlanoCarte();
 
 
-    generadorObjetos(techoVertices,techoFaces,6,amb_GrisClaro,dif_GrisClaro,spec_GrisClaro,shine_GrisClaro,emi_nada);
+    //generadorObjetos(casaVertices, casaFaces, 52, amb_GrisClaro, dif_GrisClaro, spec_GrisClaro, shine_GrisClaro, emi_nada);
+    generadorObjetos(techoVertices, techoFaces, 43, amb_GrisClaro, dif_GrisClaro, spec_GrisClaro, shine_GrisClaro, emi_nada);
+
+
+    /*generadorObjetos(techoVertices,techoFaces,6,amb_GrisClaro,dif_GrisClaro,spec_GrisClaro,shine_GrisClaro,emi_nada);
     generadorObjetos(lamparaTechoVertices,lamparaTechoFaces,1,amb_GrisClaro,dif_GrisClaro,spec_GrisClaro,shine_GrisClaro,emi_brillante);
     generadorObjetos(paredDerechaVertices, paredDerechaFaces, 6,amb_rojo,dif_rojo,spec_rojo,shine_rojo,emi_nada);
     generadorObjetos(paredFondoVertices, paredFondoFaces, 6,amb_GrisClaro,dif_GrisClaro,spec_GrisClaro,shine_GrisClaro,emi_nada);
     generadorObjetos(paredIzquierdaVertices, paredIzquierdaFaces, 6,amb_verde,dif_verde,spec_verde,shine_verde,emi_nada);
     generadorObjetos(sueloVertices, sueloFaces, 6,amb_GrisClaro,dif_GrisClaro,spec_GrisClaro,shine_GrisClaro,emi_nada);
     generadorObjetos(interIzqVertices, interIzqFaces, 6,amb_GrisClaro,dif_GrisClaro,spec_GrisClaro,shine_GrisClaro,emi_nada);
-    generadorObjetos(interDerVertices, interDerFaces, 6,amb_GrisClaro,dif_GrisClaro,spec_GrisClaro,shine_GrisClaro,emi_nada);
+    generadorObjetos(interDerVertices, interDerFaces, 6,amb_GrisClaro,dif_GrisClaro,spec_GrisClaro,shine_GrisClaro,emi_nada);*/
 
     glPopMatrix(); 		// Don't forget to pop the Matrix
     glutSwapBuffers();

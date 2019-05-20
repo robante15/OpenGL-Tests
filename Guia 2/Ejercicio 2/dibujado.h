@@ -337,8 +337,8 @@ static void lineStrip(GLfloat arregloPuntos[][3], int cFil, int cCol, std::strin
     glEnd();
 }
 
-static void generadorObjetos(GLfloat verticesArray[][3], GLint faces[][4], int fFil, GLfloat mat_ambient[], GLfloat mat_diffuse[], GLfloat mat_specular[], GLfloat shine[], GLfloat mat_emission[]) {
-    glBegin(GL_QUADS);
+static void generadorObjetos(GLfloat verticesArray[][3], GLint faces[][3], int fFil, GLfloat mat_ambient[], GLfloat mat_diffuse[], GLfloat mat_specular[], GLfloat shine[], GLfloat mat_emission[]) {
+    glBegin(GL_LINE_LOOP);
 
     glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
     glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
@@ -351,7 +351,7 @@ static void generadorObjetos(GLfloat verticesArray[][3], GLint faces[][4], int f
         for (int columnas = 0; columnas < 4; ++columnas) {
             int vfila = faces[filas][columnas] - 1;
             //std::cout << vfila+1 << std::endl;
-            //std::cout << verticesArray[vfila][0] << verticesArray[vfila][1] << verticesArray[vfila][2] << std::endl;
+            std::cout << verticesArray[vfila][0] << verticesArray[vfila][1] << verticesArray[vfila][2] << std::endl;
             vertex[0] = verticesArray[vfila][0];
             vertex[1] = verticesArray[vfila][1];
             vertex[2] = verticesArray[vfila][2];
