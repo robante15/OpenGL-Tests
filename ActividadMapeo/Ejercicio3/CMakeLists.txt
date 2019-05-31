@@ -1,7 +1,7 @@
 
 # minimal CMake version
 cmake_minimum_required(VERSION 3.13)
-project(Eje2)
+project(Eje3)
 
 set(CMAKE_CXX_STANDARD 17)
 

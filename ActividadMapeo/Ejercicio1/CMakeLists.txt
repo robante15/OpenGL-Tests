@@ -1,7 +1,7 @@
 
 # minimal CMake version
 cmake_minimum_required(VERSION 3.13)
-project(Eje2)
+project(Eje1)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -48,7 +48,7 @@ link_directories(/usr/lib/SOIL)
 
 
 # creating executable "3D"
-add_executable(3D main.cpp)
+add_executable(3D main.cpp listas.h)
 
 
 # libraries linking
