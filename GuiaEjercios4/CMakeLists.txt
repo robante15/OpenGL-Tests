@@ -11,6 +11,11 @@ include_directories(${GLUT_INCLUDE_DIRS}) # add GLUT directories
 link_directories(${GLUT_LIBRARY_DIRS}) # link GLUT directories
 add_definitions(${GLUT_DEFINITIONS}) #A adding definitions
 
+#añadiendo las librerias de SDL2
+find_package(SDL2 REQUIRED)
+include_directories(${SDL2_INCLUDE_DIRS})
+#añadiendo las librerias de SDL2
+
 
 # adding OpenGL library
 find_package(OpenGL REQUIRED)
@@ -42,10 +47,7 @@ add_definitions(-DGLEW_STATIC)
 include_directories(${GLM_INCLUDE_DIRS})
 include_directories(/usr/include/SOIL)
 link_directories(/usr/lib/SOIL)
-
-
-
-
+include_directories(/usr/include/SDL2)
 
 # creating executable "3D"
 add_executable(3D main.cpp)
@@ -53,11 +55,8 @@ add_executable(3D main.cpp)
 
 # libraries linking
 # adding link to OpenGL and GLUT libraries
-target_link_libraries(3D ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} ${GLEW_LIBRARY} SOIL)
-#target_link_libraries(3D /usr/lib/libSOIL.so)
-#target_link_libraries(3D /home/fernando9825/CLionProjects/OpenGL/tercera_guia/3D/src/)
-# adding link GL_DrawingFuncs
-#target_link_libraries(3D /home/fernando9825/CLionProjects/OpenGL/GL_DrawingFuncs/cmake-build-debug/libGL_DrawingFuncs.so)
+target_link_libraries(3D ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} ${GLEW_LIBRARY} SOIL ${SDL2_LIBRARIES} SDL2_mixer)
+
 
 
 

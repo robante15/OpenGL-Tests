@@ -1,8 +1,12 @@
 #include <stdio.h>
+#include <iostream>
 #include <GL/gl.h>
 #include <GL/glut.h>
 #include <SOIL/SOIL.h>
-//#include "steve.h"
+#include <SDL2/SDL.h>
+#include "SDL2/SDL_mixer.h"
+
+#define RUTA_AUDIO "resources/audio/sweden.wav"
 
 void suelo();
 
@@ -14,15 +18,23 @@ void steveBrazo();
 
 void stevePierna();
 
-//Definimos variables
-double rotate_y = 0;
-double rotate_x = 0;
-double rotate_z = 0;
 
-GLfloat X = 0.0f;
-GLfloat Y = 0.0f;
-GLfloat Z = 0.0f;
+
+int frameNumber; // Numero de frames
+
+//Definimos variables
+double rotateWorld_y = 0;
+double rotateWorld_x = 15;
+double rotateWorld_z = 0;
+
+GLfloat WorldX = 0.0f;
+GLfloat WorldY = -1.0f;
+GLfloat WorldZ = -1.5f;
 GLfloat scale = 0.1f;
+
+//Parametros del personaje
+GLfloat step = 2.5;
+GLfloat RotPersoAngle = 180.0f, RotPersoX = 0.0f, RotPersoY = 1.0f, RotPersoZ = 0.0f;
 GLfloat PosPersoX = 0.0f, PosPersoY = 0.0f, PosPersoZ = 0.0f;
 
 GLuint ListHead, ListTorso, ListBrazo, ListPierna, ListSuelo;
@@ -682,21 +694,21 @@ void display() {
     //Transladar el cubo a las siguientes coordenadas
     glTranslatef(0.0f, 0.0f, -5.5f);
 
-    // Rotar en el eje X,Y y Z
-    glRotatef(rotate_x, 1.0, 0.0, 0.0);
-    glRotatef(rotate_y, 0.0, 1.0, 0.0);
-    glRotatef(rotate_z, 0.0, 0.0, 1.0);
-    glTranslatef(X, Y, Z);    // Transladar en los 3 ejes
+    // Rotar la camara en el eje X,Y y Z
+    glRotatef(rotateWorld_x, 1.0, 0.0, 0.0);
+    glRotatef(rotateWorld_y, 0.0, 1.0, 0.0);
+    glRotatef(rotateWorld_z, 0.0, 0.0, 1.0);
+    glTranslatef(WorldX, WorldY, WorldZ);    // Transladar la camara en los 3 ejes
     // Otras transformaciones
-    glScalef(scale, scale, scale);
+    glScalef(scale, scale, scale); //Configurar la escala de la escena
 
     glTranslatef(0.0, -22.5, 0.0);
     glCallList(ListSuelo);
     glTranslatef(0.0, 22.5, 0.0);
 
     //PERSONAJE
-
-    glTranslatef(PosPersoX, PosPersoY, PosPersoZ);
+    glRotatef(RotPersoAngle, RotPersoX, RotPersoY, RotPersoZ);
+    glTranslatef(PosPersoX, PosPersoY, PosPersoZ); //Para coordinar la posición del personaje
 
     glCallList(ListTorso);
     glTranslatef(0.0, 12.5, 0.0);
@@ -723,16 +735,17 @@ void specialKeys(int key, int x, int y) {
 
     //  Flecha derecha: aumentar rotación 7 grados
     if (key == GLUT_KEY_UP)
-        rotate_x += 7;
+        rotateWorld_x += 5;
+
         //  Flecha abajo: rotación en eje X negativo 7 grados
     else if (key == GLUT_KEY_DOWN)
-        rotate_x -= 7;
+        rotateWorld_x -= 5;
         //  Tecla especial F2 : rotación en eje Z positivo 7 grados
     else if (key == GLUT_KEY_F2)
-        rotate_z += 7;
+        rotateWorld_z += 7;
         //  Tecla especial F2 : rotación en eje Z negativo 7 grados
     else if (key == GLUT_KEY_F2)
-        rotate_z -= 7;
+        rotateWorld_z -= 7;
 
     //  Solicitar actualización de visualización
     glutPostRedisplay();
@@ -751,45 +764,176 @@ void reshape(int w, int h) {
 
 }
 
+int saltandoAnimation = 0;
+
+void pauseAnimation() {
+    // Llamamo a la función para detener la animación
+    saltandoAnimation = 0;
+}
+
+void updateFrame() {
+    // En esta funcion agregamos el codigo que hara la secuencia de cada escena como si fuera un fotograma
+
+    for (int i = 0; i < 15; ++i) {
+        PosPersoY += 0.01;
+    }
+
+    /*for (int j = 0; j < 15; ++j) {
+        PosPersoY -= 0.01;
+    }*/
+
+    //Verificamos el numero de frames para detener animación
+    if (frameNumber == 200) {
+        pauseAnimation();
+        frameNumber = 0;
+    }
+    //Almacenamos el numero de frames
+    frameNumber++;
+    printf("Numero de Frame: %d \n", frameNumber);
+}
+
+void timerFunction(int timerID) {
+    // Invocamos la funcion para controlar el tiempo de la ejecucion de funciones
+    if (saltandoAnimation) {
+        updateFrame();
+        glutTimerFunc(30, timerFunction, 0);
+        glutPostRedisplay();
+    }
+}
+
+void startAnimation() {
+    // llamamos la función para iniciar la animación
+    if (!saltandoAnimation) {
+        saltandoAnimation = 1;
+        glutTimerFunc(30, timerFunction, 1);
+    }
+}
+
+
 // Función para controlar teclas normales del teclado.
 void keyboard(unsigned char key, int x, int y) {
     //control de teclas que hacen referencia a Escalar y transladar el cubo en los ejes X,Y,Z.
+    GLfloat temp;
     switch (key) {
         case 'w':
-            PosPersoZ -= 2.5f;
+            if (RotPersoAngle != 180) {
+
+                //Corrige las coordenadas cuando proviene de 270
+                if (RotPersoAngle == 270) {
+                    temp = PosPersoX;
+                    PosPersoX = -1 * PosPersoZ;
+                    PosPersoZ = temp;
+                }
+
+                //Corrige las coordenadas cuando proviene de 0
+                if (RotPersoAngle == 90) {
+                    temp = PosPersoX;
+                    PosPersoX = PosPersoZ;
+                    PosPersoZ = -1 * temp;
+                }
+
+                RotPersoAngle = 180;
+                RotPersoY = 1;
+                PosPersoX *= -1;
+                PosPersoZ *= -1;
+            }
+            PosPersoZ += step;
             break;
+
         case 'a':
-            PosPersoX -= 2.5f;
+            if (RotPersoAngle != 270) {
+
+                if (RotPersoAngle == 180) {
+                    temp = PosPersoX;
+                    PosPersoX = PosPersoZ;
+                    PosPersoZ = -1 * temp;
+                }
+
+                if (RotPersoAngle == 0) {
+                    temp = PosPersoX;
+                    PosPersoX = -1 * PosPersoZ;
+                    PosPersoZ = temp;
+                }
+
+                RotPersoAngle = 270;
+                RotPersoY = 1;
+                PosPersoX *= -1;
+                PosPersoZ *= -1;
+            }
+            PosPersoZ += step;
             break;
+
         case 's' :
-            PosPersoZ += 2.5f;
+
+            if (RotPersoAngle != 0) {
+
+                //Corrige las coordenadas cuando proviene de 270
+                if (RotPersoAngle == 270) {
+                    temp = PosPersoX;
+                    PosPersoX = PosPersoZ;
+                    PosPersoZ = -1 * temp;
+                }
+
+                //Corrige las coordenadas cuando proviene de 0
+                if (RotPersoAngle == 90) {
+                    temp = PosPersoX;
+                    PosPersoX = -1*PosPersoZ;
+                    PosPersoZ = temp;
+                }
+
+                RotPersoAngle = 0;
+                RotPersoY = 1;
+                PosPersoX *= -1;
+                PosPersoZ *= -1;
+            }
+            PosPersoZ += step;
             break;
+
         case 'd' :
-            PosPersoX += 2.5f;
+            if (RotPersoAngle != 90) {
+
+                if (RotPersoAngle == 180) {
+                    temp = PosPersoX;
+                    PosPersoX = -1 * PosPersoZ;
+                    PosPersoZ = temp;
+                }
+
+                if (RotPersoAngle == 0) {
+                    temp = PosPersoX;
+                    PosPersoX = PosPersoZ;
+                    PosPersoZ = -1 * temp;
+                }
+
+                RotPersoAngle = 90;
+                RotPersoY = 1;
+                PosPersoX *= -1;
+                PosPersoZ *= -1;
+            }
+            PosPersoZ += step;
             break;
         case '8' :
-            Y -= 0.1f;
+            WorldY -= 0.1f;
             break;
         case '5' :
-            Y += 0.1f;
+            WorldY += 0.1f;
             break;
         case '4':
-            X -=0.1f;
+            WorldX -= 0.1f;
             break;
         case '6':
-            X +=0.1f;
+            WorldX += 0.1f;
             break;
         case '7':
-            rotate_y += 7;
+            rotateWorld_y += 5;
             break;
         case '9':
-            rotate_y -= 7;
+            rotateWorld_y -= 5;
             break;
         case '-':
-            Z -= 0.1f;
+            WorldZ -= 0.1f;
             break;
         case '+':
-            Z += 0.1f;
+            WorldZ += 0.1f;
             break;
         case 'q':
             exit(0);            // exit
@@ -799,15 +943,23 @@ void keyboard(unsigned char key, int x, int y) {
 
 
 void update(int value) {
-    rotate_y += 5;
-    rotate_x += 6;
-    rotate_z += 7;
+    rotateWorld_y += 5;
+    rotateWorld_x += 6;
+    rotateWorld_z += 7;
 
     glutPostRedisplay();
     glutTimerFunc(25, update, 0);
 }
 
 int main(int argc, char *argv[]) {
+
+    if( SDL_Init(SDL_INIT_AUDIO) < 0 ) exit(1);
+    // Setup audio mode
+    Mix_OpenAudio(22050,AUDIO_S16SYS,2,640);
+    Mix_Music *mus;  // Background Music
+
+    mus = Mix_LoadMUS(RUTA_AUDIO);
+    Mix_PlayMusic(mus,1); //Music loop=1
 
     //  Inicializar los parámetros GLUT y de usuario proceso
     glutInit(&argc, argv);

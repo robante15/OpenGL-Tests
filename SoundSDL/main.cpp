@@ -1,6 +1,6 @@
 #include <SDL2/SDL.h>
 
-#define RUTA_AUDIO "imperial.wav"
+#define RUTA_AUDIO "sweden.wav"
 
 // prototype for our audio callback
 // see the implementation for more information
