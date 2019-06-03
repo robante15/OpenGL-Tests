@@ -32,10 +32,31 @@ GLfloat WorldY = -1.0f;
 GLfloat WorldZ = -1.5f;
 GLfloat scale = 0.1f;
 
-//Parametros del personaje
-GLfloat step = 2.5;
+//Parametros Globales del personaje
+GLfloat step = 1.75;
 GLfloat RotPersoAngle = 180.0f, RotPersoX = 0.0f, RotPersoY = 1.0f, RotPersoZ = 0.0f;
 GLfloat PosPersoX = 0.0f, PosPersoY = 0.0f, PosPersoZ = 0.0f;
+
+//Control de extremidades
+GLfloat PosHeadX = 0, PosHeadY = 0, PosHeadZ = 0;
+GLfloat AngleHead = 0, RotHeadX = 0, RotHeadY = 0, RotHeadZ = 0;
+
+GLfloat PosTorsoX = 0, PosTorsoY = 0, PosTorsoZ = 0;
+GLfloat AngleTorso = 0, RotTorsoX = 0, RotTorsoY = 0, RotTorsoZ = 0;
+
+GLfloat PosRightArmX = 0, PosRightArmY = 0, PosRightArmZ = 0;
+GLfloat AngleRightArm = 0, RotRightArmX = 0, RotRightArmY = 0, RotRightArmZ = 0;
+
+GLfloat PosLeftArmX = 0, PosLeftArmY = 0, PosLeftArmZ = 0;
+GLfloat AngleLeftArm = 0, RotLeftArmX = 0, RotLeftArmY = 0, RotLeftArmZ = 0;
+
+GLfloat PosRightLegX = 0, PosRightLegY = 0, PosRightLegZ = 0;
+GLfloat AngleRightLeg = 0, RotRightLegX = 0, RotRightLegY = 0, RotRightLegZ = 0;
+
+GLfloat PosLeftLegX = 0, PosLeftLegY = 0, PosLeftLegZ = 0;
+GLfloat AngleLeftLeg = 0, RotLeftLegX = 0, RotLeftLegY = 0, RotLeftLegZ = 0;
+
+//Parametros
 
 GLuint ListHead, ListTorso, ListBrazo, ListPierna, ListSuelo;
 
@@ -707,22 +728,55 @@ void display() {
     glTranslatef(0.0, 22.5, 0.0);
 
     //PERSONAJE
-    glRotatef(RotPersoAngle, RotPersoX, RotPersoY, RotPersoZ);
+    glRotatef(RotPersoAngle, RotPersoX, RotPersoY, RotPersoZ); //Coordina la rotación del personaje
     glTranslatef(PosPersoX, PosPersoY, PosPersoZ); //Para coordinar la posición del personaje
 
+
+    glTranslatef(PosTorsoX, PosTorsoY, PosTorsoZ); //Translacion especifica de la cabeza
+    glRotatef(AngleTorso, RotTorsoX, RotTorsoY, RotTorsoZ); //Rotación especifica de la cabeza
     glCallList(ListTorso);
+    glRotatef(AngleTorso *-1, RotTorsoX, RotTorsoY, RotTorsoZ); //Devuelve los valores a su estado normal para que no afecten las demás listas
+    glTranslatef(PosTorsoX *-1, PosTorsoY *-1, PosTorsoZ *-1); //Devuelve los valores a su estado normal para que no afecten las demás listas
+
+    //Cabeza
     glTranslatef(0.0, 12.5, 0.0);
+    glTranslatef(PosHeadX, PosHeadY, PosHeadZ); //Translacion especifica de la cabeza
+    glRotatef(AngleHead, RotHeadX, PosHeadY, RotHeadZ); //Rotación especifica de la cabeza
     glCallList(ListHead);
-    glTranslatef(7.5, -12.5, 0.0);
+    glRotatef(AngleRightArm *-1, RotRightArmX, RotRightArmY, RotRightArmZ); //Devuelve los valores a su estado normal para que no afecten las demás listas
+    glTranslatef(PosRightArmX *-1, PosRightArmY *-1, PosRightArmZ *-1); //Devuelve los valores a su estado normal para que no afecten las demás listas
+
+    //Brazo derecho
+    glTranslatef(7.5, -12.5, 0.0); //Translate para acomodar el brazo
+    glTranslatef(PosRightArmX, PosRightArmY, PosRightArmZ); //Translacion especifica del brazo derecho
+    glRotatef(AngleRightArm, RotRightArmX, RotRightArmY, RotRightArmZ); //Rotación especifica del brazo derecho
     glCallList(ListBrazo);
+    glRotatef(AngleRightArm *-1, RotRightArmX, RotRightArmY, RotRightArmZ); //Devuelve los valores a su estado normal para que no afecten las demás listas
+    glTranslatef(PosRightArmX *-1, PosRightArmY *-1, PosRightArmZ *-1); //Devuelve los valores a su estado normal para que no afecten las demás listas
+
+    //Brazo izquierdo
     glTranslatef(-15.0, 0.0, 0.0);
+    glTranslatef(PosLeftArmX, PosLeftArmY, PosLeftArmZ); //Translacion especifica del brazo derecho
+    glRotatef(AngleLeftArm, RotLeftArmX, RotLeftArmY, RotLeftArmZ); //Rotación especifica del brazo derecho
     glCallList(ListBrazo);
+    glRotatef(AngleLeftArm *-1, RotLeftArmX, RotLeftArmY, RotLeftArmZ); //Devuelve los valores a su estado normal para que no afecten las demás listas
+    glTranslatef(PosLeftArmX *-1, PosLeftArmY *-1, PosLeftArmZ *-1); //Devuelve los valores a su estado normal para que no afecten las demás listas
+
+    //Pierna derecha
     glTranslatef(5, -15.0, 0.0);
+    glTranslatef(PosLeftLegX, PosLeftLegY, PosLeftLegZ); //Translacion especifica del brazo derecho
+    glRotatef(AngleLeftLeg, RotLeftLegX, RotLeftLegY, RotLeftLegZ); //Rotación especifica del brazo derecho
     glCallList(ListPierna);
+    glRotatef(AngleLeftLeg *-1, RotLeftLegX, RotLeftLegY, RotLeftLegZ); //Devuelve los valores a su estado normal para que no afecten las demás listas
+    glTranslatef(PosLeftLegX *-1, PosLeftLegY *-1, PosLeftLegZ *-1); //Devuelve los valores a su estado normal para que no afecten las demás listas
+
+    //Pierna izquierda
     glTranslatef(5, 0.0, 0.0f);
+    glTranslatef(PosRightLegX, PosRightLegY, PosRightLegZ); //Translacion especifica del brazo derecho
+    glRotatef(AngleRightLeg, RotRightLegX, RotRightLegY, RotRightLegZ); //Rotación especifica del brazo derecho
     glCallList(ListPierna);
-
-
+    glRotatef(AngleLeftLeg *-1, RotRightLegX, RotRightLegY, RotRightLegZ); //Devuelve los valores a su estado normal para que no afecten las demás listas
+    glTranslatef(PosRightLegX *-1, PosRightLegY *-1, PosRightLegZ *-1); //Devuelve los valores a su estado normal para que no afecten las demás listas
 
 
     //glFlush();
@@ -934,6 +988,13 @@ void keyboard(unsigned char key, int x, int y) {
             break;
         case '+':
             WorldZ += 0.1f;
+            break;
+        case 'r':
+            if(step == 1.75){
+                step = 5.75;
+            }else{
+                step = 1.75;
+            }
             break;
         case 'q':
             exit(0);            // exit
