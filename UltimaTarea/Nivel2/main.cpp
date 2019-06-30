@@ -9,14 +9,18 @@
 #define RUTA_AUDIO "resources/audio/sweden.wav"
 
 void suelo();
-
 void torre();
-
 void puente();
-
 void perimetro();
-
+void porton();
+void steveHead();
+void steveTorso();
+void steveBrazo();
 void stevePierna();
+
+void objeto1();
+void objeto2();
+void objeto3();
 
 int frameNumber; // Numero de frames
 
@@ -33,9 +37,11 @@ GLfloat scale = 0.1f;
 //Parametros del personaje
 GLfloat step = 2.5;
 GLfloat RotPersoAngle = 0.0f, RotPersoX = 0.0f, RotPersoY = 0.0f, RotPersoZ = 0.0f;
-GLfloat PosPersoX = 0.0f, PosPersoY = 0.0f, PosPersoZ = 0.0f;
+GLfloat PosPersoX = 0.0f, PosPersoY = 13.5f, PosPersoZ = 0.0f;
 
-GLuint ListTower, ListPuente, ListPerimetro, ListPierna, ListSuelo;
+GLuint ListTower, ListPuente, ListPerimetro, ListPorton, ListSuelo;
+GLuint ListHead, ListTorso, ListBrazo, ListPierna;
+GLuint ListObjeto1, ListObjeto2, ListObjeto3;
 
 //Arreglo de imagenes
 GLuint texture[0];
@@ -80,15 +86,51 @@ void init(void) {
     perimetro();
     glEndList();
 
-    ListPierna = glGenLists(1);
-    glNewList(ListPierna, GL_COMPILE);
-    stevePierna();
+    ListPorton = glGenLists(1);
+    glNewList(ListPorton, GL_COMPILE);
+    porton();
     glEndList();
 
     ListSuelo = glGenLists(1);
     glNewList(ListSuelo, GL_COMPILE);
     suelo();
     glEndList();
+
+    ListHead = glGenLists(1);
+    glNewList(ListHead, GL_COMPILE);
+    steveHead();
+    glEndList();
+
+    ListTorso = glGenLists(1);
+    glNewList(ListTorso, GL_COMPILE);
+    steveTorso();
+    glEndList();
+
+    ListBrazo = glGenLists(1);
+    glNewList(ListBrazo, GL_COMPILE);
+    steveBrazo();
+    glEndList();
+
+    ListPierna = glGenLists(1);
+    glNewList(ListPierna, GL_COMPILE);
+    stevePierna();
+    glEndList();
+
+    ListObjeto1 = glGenLists(1);
+    glNewList(ListObjeto1, GL_COMPILE);
+    objeto1();
+    glEndList();
+
+    ListObjeto2 = glGenLists(1);
+    glNewList(ListObjeto2, GL_COMPILE);
+    objeto2();
+    glEndList();
+
+    ListObjeto3 = glGenLists(1);
+    glNewList(ListObjeto3, GL_COMPILE);
+    objeto3();
+    glEndList();
+
 }
 
 void suelo() {
@@ -305,6 +347,727 @@ void perimetro() {
     glDisable(GL_TEXTURE_2D);
 }
 
+void porton() {
+//Definicion de texturas
+    texture[0] = SOIL_load_OGL_texture // load an image file directly as a new OpenGL texture
+            (
+                    "oak.bmp",
+                    SOIL_LOAD_AUTO,
+                    SOIL_CREATE_NEW_ID,
+                    SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+            );
+
+    // Frente
+    glEnable(GL_TEXTURE_2D);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glBindTexture(GL_TEXTURE_2D, texture[0]);
+    glBegin(GL_POLYGON);
+    glNormal3f(0.0f, 0.0f, 1.0f);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(10.0f, 0.0f, 0.0f);
+    glTexCoord2f(16.0f, 0.0f); glVertex3f(110.0f, 0.0f, 0.0f);
+    glTexCoord2f(16.0f, 6.0f); glVertex3f(110.0f, 50.0f, 0.0f);
+    glTexCoord2f(0.0f, 6.0f); glVertex3f(10.0f, 50.0f, 0.0f);
+    glEnd();
+
+    glDisable(GL_TEXTURE_2D);
+}
+
+void steveHead() {
+//Definicion de texturas
+    texture[0] = SOIL_load_OGL_texture // load an image file directly as a new OpenGL texture
+            (
+                    "head/front.bmp",
+                    SOIL_LOAD_AUTO,
+                    SOIL_CREATE_NEW_ID,
+                    SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+            );
+
+    texture[1] = SOIL_load_OGL_texture // load an image file directly as a new OpenGL texture
+            (
+                    "head/back.bmp",
+                    SOIL_LOAD_AUTO,
+                    SOIL_CREATE_NEW_ID,
+                    SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+            );
+
+    texture[2] = SOIL_load_OGL_texture // load an image file directly as a new OpenGL texture
+            (
+                    "head/top.bmp",
+                    SOIL_LOAD_AUTO,
+                    SOIL_CREATE_NEW_ID,
+                    SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+            );
+
+    texture[3] = SOIL_load_OGL_texture // load an image file directly as a new OpenGL texture
+            (
+                    "head/button.bmp",
+                    SOIL_LOAD_AUTO,
+                    SOIL_CREATE_NEW_ID,
+                    SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+            );
+    texture[4] = SOIL_load_OGL_texture // load an image file directly as a new OpenGL texture
+            (
+                    "head/right.bmp",
+                    SOIL_LOAD_AUTO,
+                    SOIL_CREATE_NEW_ID,
+                    SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+            );
+    texture[5] = SOIL_load_OGL_texture // load an image file directly as a new OpenGL texture
+            (
+                    "head/left.bmp",
+                    SOIL_LOAD_AUTO,
+                    SOIL_CREATE_NEW_ID,
+                    SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+            );
+
+    // Frente
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture[0]);
+    glBegin(GL_POLYGON);
+
+    glNormal3f(0.0f, 0.0f, 1.0f);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(-5.0f, -5.0f, 5.0f);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(5.0f, -5.0f, 5.0f);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(5.0f, 5.0f, 5.0f);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(-5.0f, 5.0f, 5.0f);
+    glEnd();
+
+    // parte de Atras
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture[1]);
+    glBegin(GL_POLYGON);
+    glNormal3f(0.0f, 0.0f, -1.0f);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(-5.0f, -5.0f, -5.0f);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(-5.0f, 5.0f, -5.0f);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(5.0f, 5.0f, -5.0f);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(5.0f, -5.0f, -5.0f);
+    glEnd();
+    // Arriba
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture[2]);
+    glBegin(GL_POLYGON);
+    glNormal3f(0.0f, 1.0f, 0.0f);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(-5.0f, 5.0f, -5.0f);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(-5.0f, 5.0f, 5.0f);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(5.0f, 5.0f, 5.0f);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(5.0f, 5.0f, -5.0f);
+    glEnd();
+
+    // Abajo
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture[3]);
+    glBegin(GL_POLYGON);
+    glNormal3f(0.0f, -1.0f, 0.0f);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(-5.0f, -5.0f, -5.0f);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(5.0f, -5.0f, -5.0f);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(5.0f, -5.0f, 5.0f);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(-5.0f, -5.0f, 5.0f);
+    glEnd();
+
+    // lado Derecho
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture[4]);
+    glBegin(GL_POLYGON);
+    glNormal3f(1.0f, 0.0f, 0.0f);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(5.0f, -5.0f, -5.0f);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(5.0f, 5.0f, -5.0f);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(5.0f, 5.0f, 5.0f);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(5.0f, -5.0f, 5.0f);
+    glEnd();
+
+    // Lado Izquierdo
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture[5]);
+    glBegin(GL_POLYGON);
+    glNormal3f(-1.0f, 0.0f, 0.0f);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(-5.0f, -5.0f, -5.0f);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(-5.0f, -5.0f, 5.0f);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(-5.0f, 5.0f, 5.0f);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(-5.0f, 5.0f, -5.0f);
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
+}
+
+void objeto1() {
+//Definicion de texturas
+    texture[0] = SOIL_load_OGL_texture // load an image file directly as a new OpenGL texture
+            (
+                    "objeto1/crafting_table_front.bmp",
+                    SOIL_LOAD_AUTO,
+                    SOIL_CREATE_NEW_ID,
+                    SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+            );
+
+    texture[2] = SOIL_load_OGL_texture // load an image file directly as a new OpenGL texture
+            (
+                    "objeto1/crafting_table_button.bmp",
+                    SOIL_LOAD_AUTO,
+                    SOIL_CREATE_NEW_ID,
+                    SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+            );
+
+    texture[3] = SOIL_load_OGL_texture // load an image file directly as a new OpenGL texture
+            (
+                    "objeto1/crafting_table_side.bmp",
+                    SOIL_LOAD_AUTO,
+                    SOIL_CREATE_NEW_ID,
+                    SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+            );
+    texture[4] = SOIL_load_OGL_texture // load an image file directly as a new OpenGL texture
+            (
+                    "objeto1/crafting_table_top.bmp",
+                    SOIL_LOAD_AUTO,
+                    SOIL_CREATE_NEW_ID,
+                    SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+            );
+
+    // Frente
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture[0]);
+    glBegin(GL_POLYGON);
+
+    glNormal3f(0.0f, 0.0f, 1.0f);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(-10.0f, -10.0f, 10.0f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(10.0f, -10.0f, 10.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(10.0f, 10.0f, 10.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(-10.0f, 10.0f, 10.0f);
+    glEnd();
+
+    // parte de Atras
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture[0]);
+    glBegin(GL_POLYGON);
+    glNormal3f(0.0f, 0.0f, -1.0f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(-10.0f, -10.0f, -10.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(-10.0f, 10.0f, -10.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(10.0f, 10.0f, -10.0f);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(10.0f, -10.0f, -10.0f);
+    glEnd();
+    // Arriba
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture[4]);
+    glBegin(GL_POLYGON);
+    glNormal3f(0.0f, 1.0f, 0.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(-10.0f, 10.0f, -10.0f);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(-10.0f, 10.0f, 10.0f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(10.0f, 10.0f, 10.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(10.0f, 10.0f, -10.0f);
+    glEnd();
+
+    // Abajo
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture[2]);
+    glBegin(GL_POLYGON);
+    glNormal3f(0.0f, -1.0f, 0.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(-10.0f, -10.0f, -10.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(10.0f, -10.0f, -10.0f);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(10.0f, -10.0f, 10.0f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(-10.0f, -10.0f, 10.0f);
+    glEnd();
+
+    // lado Derecho
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture[3]);
+    glBegin(GL_POLYGON);
+    glNormal3f(1.0f, 0.0f, 0.0f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(10.0f, -10.0f, -10.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(10.0f, 10.0f, -10.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(10.0f, 10.0f, 10.0f);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(10.0f, -10.0f, 10.0f);
+    glEnd();
+
+    // Lado Izquierdo
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture[3]);
+    glBegin(GL_POLYGON);
+    glNormal3f(-1.0f, 0.0f, 0.0f);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(-10.0f, -10.0f, -10.0f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(-10.0f, -10.0f, 10.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(-10.0f, 10.0f, 10.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(-10.0f, 10.0f, -10.0f);
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
+}
+
+void objeto2() {
+//Definicion de texturas
+    texture[0] = SOIL_load_OGL_texture // load an image file directly as a new OpenGL texture
+            (
+                    "objeto2/bookshelf.bmp",
+                    SOIL_LOAD_AUTO,
+                    SOIL_CREATE_NEW_ID,
+                    SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+            );
+
+    texture[1] = SOIL_load_OGL_texture // load an image file directly as a new OpenGL texture
+            (
+                    "objeto2/button.bmp",
+                    SOIL_LOAD_AUTO,
+                    SOIL_CREATE_NEW_ID,
+                    SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+            );
+
+
+    // Frente
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture[0]);
+    glBegin(GL_POLYGON);
+
+    glNormal3f(0.0f, 0.0f, 1.0f);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(-10.0f, -10.0f, 10.0f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(10.0f, -10.0f, 10.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(10.0f, 10.0f, 10.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(-10.0f, 10.0f, 10.0f);
+    glEnd();
+
+    // parte de Atras
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture[0]);
+    glBegin(GL_POLYGON);
+    glNormal3f(0.0f, 0.0f, -1.0f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(-10.0f, -10.0f, -10.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(-10.0f, 10.0f, -10.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(10.0f, 10.0f, -10.0f);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(10.0f, -10.0f, -10.0f);
+    glEnd();
+    // Arriba
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture[1]);
+    glBegin(GL_POLYGON);
+    glNormal3f(0.0f, 1.0f, 0.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(-10.0f, 10.0f, -10.0f);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(-10.0f, 10.0f, 10.0f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(10.0f, 10.0f, 10.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(10.0f, 10.0f, -10.0f);
+    glEnd();
+
+    // Abajo
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture[1]);
+    glBegin(GL_POLYGON);
+    glNormal3f(0.0f, -1.0f, 0.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(-10.0f, -10.0f, -10.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(10.0f, -10.0f, -10.0f);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(10.0f, -10.0f, 10.0f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(-10.0f, -10.0f, 10.0f);
+    glEnd();
+
+    // lado Derecho
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture[0]);
+    glBegin(GL_POLYGON);
+    glNormal3f(1.0f, 0.0f, 0.0f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(10.0f, -10.0f, -10.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(10.0f, 10.0f, -10.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(10.0f, 10.0f, 10.0f);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(10.0f, -10.0f, 10.0f);
+    glEnd();
+
+    // Lado Izquierdo
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture[0]);
+    glBegin(GL_POLYGON);
+    glNormal3f(-1.0f, 0.0f, 0.0f);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(-10.0f, -10.0f, -10.0f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(-10.0f, -10.0f, 10.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(-10.0f, 10.0f, 10.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(-10.0f, 10.0f, -10.0f);
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
+}
+
+void objeto3() {
+//Definicion de texturas
+    texture[0] = SOIL_load_OGL_texture // load an image file directly as a new OpenGL texture
+            (
+                    "objeto3/melon_side.bmp",
+                    SOIL_LOAD_AUTO,
+                    SOIL_CREATE_NEW_ID,
+                    SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+            );
+
+    texture[1] = SOIL_load_OGL_texture // load an image file directly as a new OpenGL texture
+            (
+                    "objeto3/melon_top.bmp",
+                    SOIL_LOAD_AUTO,
+                    SOIL_CREATE_NEW_ID,
+                    SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+            );
+
+
+    // Frente
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture[0]);
+    glBegin(GL_POLYGON);
+
+    glNormal3f(0.0f, 0.0f, 1.0f);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(-10.0f, -10.0f, 10.0f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(10.0f, -10.0f, 10.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(10.0f, 10.0f, 10.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(-10.0f, 10.0f, 10.0f);
+    glEnd();
+
+    // parte de Atras
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture[0]);
+    glBegin(GL_POLYGON);
+    glNormal3f(0.0f, 0.0f, -1.0f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(-10.0f, -10.0f, -10.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(-10.0f, 10.0f, -10.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(10.0f, 10.0f, -10.0f);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(10.0f, -10.0f, -10.0f);
+    glEnd();
+    // Arriba
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture[1]);
+    glBegin(GL_POLYGON);
+    glNormal3f(0.0f, 1.0f, 0.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(-10.0f, 10.0f, -10.0f);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(-10.0f, 10.0f, 10.0f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(10.0f, 10.0f, 10.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(10.0f, 10.0f, -10.0f);
+    glEnd();
+
+    // Abajo
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture[0]);
+    glBegin(GL_POLYGON);
+    glNormal3f(0.0f, -1.0f, 0.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(-10.0f, -10.0f, -10.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(10.0f, -10.0f, -10.0f);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(10.0f, -10.0f, 10.0f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(-10.0f, -10.0f, 10.0f);
+    glEnd();
+
+    // lado Derecho
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture[0]);
+    glBegin(GL_POLYGON);
+    glNormal3f(1.0f, 0.0f, 0.0f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(10.0f, -10.0f, -10.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(10.0f, 10.0f, -10.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(10.0f, 10.0f, 10.0f);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(10.0f, -10.0f, 10.0f);
+    glEnd();
+
+    // Lado Izquierdo
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture[0]);
+    glBegin(GL_POLYGON);
+    glNormal3f(-1.0f, 0.0f, 0.0f);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(-10.0f, -10.0f, -10.0f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(-10.0f, -10.0f, 10.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(-10.0f, 10.0f, 10.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(-10.0f, 10.0f, -10.0f);
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
+}
+
+void steveTorso() {
+//Definicion de texturas
+    texture[0] = SOIL_load_OGL_texture // load an image file directly as a new OpenGL texture
+            (
+                    "torso/front.bmp",
+                    SOIL_LOAD_AUTO,
+                    SOIL_CREATE_NEW_ID,
+                    SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+            );
+
+    texture[1] = SOIL_load_OGL_texture // load an image file directly as a new OpenGL texture
+            (
+                    "torso/back.bmp",
+                    SOIL_LOAD_AUTO,
+                    SOIL_CREATE_NEW_ID,
+                    SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+            );
+
+    texture[2] = SOIL_load_OGL_texture // load an image file directly as a new OpenGL texture
+            (
+                    "torso/top.bmp",
+                    SOIL_LOAD_AUTO,
+                    SOIL_CREATE_NEW_ID,
+                    SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+            );
+
+    texture[3] = SOIL_load_OGL_texture // load an image file directly as a new OpenGL texture
+            (
+                    "torso/button.bmp",
+                    SOIL_LOAD_AUTO,
+                    SOIL_CREATE_NEW_ID,
+                    SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+            );
+    texture[4] = SOIL_load_OGL_texture // load an image file directly as a new OpenGL texture
+            (
+                    "torso/right.bmp",
+                    SOIL_LOAD_AUTO,
+                    SOIL_CREATE_NEW_ID,
+                    SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+            );
+    texture[5] = SOIL_load_OGL_texture // load an image file directly as a new OpenGL texture
+            (
+                    "torso/left.bmp",
+                    SOIL_LOAD_AUTO,
+                    SOIL_CREATE_NEW_ID,
+                    SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+            );
+
+    // Frente
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture[0]);
+    glBegin(GL_POLYGON);
+
+    glNormal3f(0.0f, 0.0f, 1.0f);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(-5.0f, -7.5f, 2.5f);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(5.0f, -7.5f, 2.5f);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(5.0f, 7.5f, 2.5f);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(-5.0f, 7.5f, 2.5f);
+    glEnd();
+
+    // parte de Atras
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture[1]);
+    glBegin(GL_POLYGON);
+    glNormal3f(0.0f, 0.0f, -1.0f);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(-5.0f, -7.5f, -2.5f);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(-5.0f, 7.5f, -2.5f);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(5.0f, 7.5f, -2.5f);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(5.0f, -7.5f, -2.5f);
+    glEnd();
+    // Arriba
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture[2]);
+    glBegin(GL_POLYGON);
+    glNormal3f(0.0f, 1.0f, 0.0f);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(-5.0f, 7.5, -2.5f);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(-5.0f, 7.5f, 2.5f);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(5.0f, 7.5f, 2.5f);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(5.0f, 7.5f, -2.5f);
+    glEnd();
+
+    // Abajo
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture[3]);
+    glBegin(GL_POLYGON);
+    glNormal3f(0.0f, -1.0f, 0.0f);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(-5.0f, -7.5f, -2.5f);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(5.0f, -7.5f, -2.5f);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(5.0f, -7.5f, 2.5f);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(-5.0f, -7.5f, 2.5f);
+    glEnd();
+
+    // lado Derecho
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture[4]);
+    glBegin(GL_POLYGON);
+    glNormal3f(1.0f, 0.0f, 0.0f);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(5.0f, -7.5f, -2.5f);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(5.0f, 7.5f, -2.5f);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(5.0f, 7.5f, 2.5f);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(5.0f, -7.5f, 2.5f);
+    glEnd();
+
+    // Lado Izquierdo
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture[5]);
+    glBegin(GL_POLYGON);
+    glNormal3f(-1.0f, 0.0f, 0.0f);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(-5.0f, -7.5f, -2.5f);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(-5.0f, -7.5f, 2.5f);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(-5.0f, 7.5f, 2.5f);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(-5.0f, 7.5f, -2.5f);
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
+}
+
+void steveBrazo() {
+//Definicion de texturas
+    texture[0] = SOIL_load_OGL_texture // load an image file directly as a new OpenGL texture
+            (
+                    "arm/front.bmp",
+                    SOIL_LOAD_AUTO,
+                    SOIL_CREATE_NEW_ID,
+                    SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+            );
+
+    texture[1] = SOIL_load_OGL_texture // load an image file directly as a new OpenGL texture
+            (
+                    "arm/back.bmp",
+                    SOIL_LOAD_AUTO,
+                    SOIL_CREATE_NEW_ID,
+                    SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+            );
+
+    texture[2] = SOIL_load_OGL_texture // load an image file directly as a new OpenGL texture
+            (
+                    "arm/top.bmp",
+                    SOIL_LOAD_AUTO,
+                    SOIL_CREATE_NEW_ID,
+                    SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+            );
+
+    texture[3] = SOIL_load_OGL_texture // load an image file directly as a new OpenGL texture
+            (
+                    "arm/button.bmp",
+                    SOIL_LOAD_AUTO,
+                    SOIL_CREATE_NEW_ID,
+                    SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+            );
+    texture[4] = SOIL_load_OGL_texture // load an image file directly as a new OpenGL texture
+            (
+                    "arm/right.bmp",
+                    SOIL_LOAD_AUTO,
+                    SOIL_CREATE_NEW_ID,
+                    SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+            );
+    texture[5] = SOIL_load_OGL_texture // load an image file directly as a new OpenGL texture
+            (
+                    "arm/left.bmp",
+                    SOIL_LOAD_AUTO,
+                    SOIL_CREATE_NEW_ID,
+                    SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+            );
+
+    // Frente
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture[0]);
+    glBegin(GL_POLYGON);
+
+    glNormal3f(0.0f, 0.0f, 1.0f);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(-2.5f, -7.5f, 2.5f);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(2.5f, -7.5f, 2.5f);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(2.5f, 7.5f, 2.5f);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(-2.5f, 7.5f, 2.5f);
+    glEnd();
+
+    // parte de Atras
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture[1]);
+    glBegin(GL_POLYGON);
+    glNormal3f(0.0f, 0.0f, -1.0f);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(-2.5f, -7.5f, -2.5f);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(-2.5f, 7.5f, -2.5f);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(2.5f, 7.5f, -2.5f);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(2.5f, -7.5f, -2.5f);
+    glEnd();
+    // Arriba
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture[2]);
+    glBegin(GL_POLYGON);
+    glNormal3f(0.0f, 1.0f, 0.0f);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(-2.5f, 7.5, -2.5f);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(-2.5f, 7.5f, 2.5f);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(2.5f, 7.5f, 2.5f);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(2.5f, 7.5f, -2.5f);
+    glEnd();
+
+    // Abajo
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture[3]);
+    glBegin(GL_POLYGON);
+    glNormal3f(0.0f, -1.0f, 0.0f);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(-2.5f, -7.5f, -2.5f);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(2.5f, -7.5f, -2.5f);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(2.5f, -7.5f, 2.5f);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(-2.5f, -7.5f, 2.5f);
+    glEnd();
+
+    // lado Derecho
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture[4]);
+    glBegin(GL_POLYGON);
+    glNormal3f(1.0f, 0.0f, 0.0f);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(2.5f, -7.5f, -2.5f);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(2.5f, 7.5f, -2.5f);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(2.5f, 7.5f, 2.5f);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(2.5f, -7.5f, 2.5f);
+    glEnd();
+
+    // Lado Izquierdo
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture[5]);
+    glBegin(GL_POLYGON);
+    glNormal3f(-1.0f, 0.0f, 0.0f);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(-2.5f, -7.5f, -2.5f);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(-2.5f, -7.5f, 2.5f);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(-2.5f, 7.5f, 2.5f);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(-2.5f, 7.5f, -2.5f);
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
+}
+
 void stevePierna() {
 //Definicion de texturas
     texture[0] = SOIL_load_OGL_texture // load an image file directly as a new OpenGL texture
@@ -468,26 +1231,42 @@ void display() {
     glTranslatef(-60.0, 0.0f, 0.0);
     glCallList(ListTower);
     glCallList(ListPerimetro);
+    glTranslatef(330.0, 0.0f, 0.0);
+    glCallList(ListPerimetro);
+    glTranslatef(-330.0, 0.0f, 0.0);
+
+    //glCallList(ListPorton);
+
     glTranslatef(120.0, 0.0f, 0.0);
     glCallList(ListTower);
     glTranslatef(-60.0, 0.0f, 0.0);
     glCallList(ListPuente);
 
-
-
     //PERSONAJE
     glRotatef(RotPersoAngle, RotPersoX, RotPersoY, RotPersoZ);
     glTranslatef(PosPersoX, PosPersoY, PosPersoZ); //Para coordinar la posición del personaje
 
-    //glCallList(ListPuente);
+    glScalef(0.6f,0.6f,0.6f);
+    glCallList(ListTorso);
+    glTranslatef(0.0, 12.5, 0.0);
+    glCallList(ListHead);
 
+    glTranslatef(7.5, -6.5, 4.5);
+    glRotatef(260,1,0,0);
+    glCallList(ListBrazo);
+    glTranslatef(-15.0, 0.0, 1.5);
+    glRotatef(-15,1,0,0);
+    glCallList(ListBrazo);
 
-    /*glTranslatef(-15.0, 0.0, 0.0);
-    glCallList(ListPerimetro);
-    glTranslatef(5, -15.0, 0.0);
+    glRotatef(-245,1,0,0);
+    glTranslatef(5.0, -22.5, -4.30);
     glCallList(ListPierna);
     glTranslatef(5, 0.0, 0.0f);
-    glCallList(ListPierna);*/
+    glCallList(ListPierna);
+
+
+    //glTranslatef(0,2.5,15);
+    //glCallList(ListObjeto3);
 
 
 
