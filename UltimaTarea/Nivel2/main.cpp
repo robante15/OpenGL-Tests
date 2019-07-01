@@ -6,6 +6,9 @@
 #include <iostream>
 #include "SDL2/SDL_mixer.h"
 
+#include <stdlib.h>
+#include <time.h>
+
 #define RUTA_AUDIO "resources/audio/sweden.wav"
 
 void suelo();
@@ -22,6 +25,7 @@ void objeto1();
 void objeto2();
 void objeto3();
 
+int animating = 0;
 int frameNumber; // Numero de frames
 
 //Definimos variables
@@ -36,8 +40,12 @@ GLfloat scale = 0.1f;
 
 //Parametros del personaje
 GLfloat step = 2.5;
-GLfloat RotPersoAngle = 0.0f, RotPersoX = 0.0f, RotPersoY = 0.0f, RotPersoZ = 0.0f;
-GLfloat PosPersoX = 0.0f, PosPersoY = 13.5f, PosPersoZ = 0.0f;
+GLfloat RotPersoAngle = 180.0f, RotPersoX = 0.0f, RotPersoY = 1.0f, RotPersoZ = 0.0f;
+GLfloat PosPersoX = 0.0f, PosPersoY = 13.5f, PosPersoZ = -14.5f;
+
+GLfloat PosObj1X = 0.0f, PosObj1Y = 80.0f, PosObj1Z = 15.0f;
+GLfloat PosObj2X = 40.0f, PosObj2Y = 80.0f, PosObj2Z = 15.0f;
+GLfloat PosObj3X = -40.0f, PosObj3Y = 80.0f, PosObj3Z = 15.0f;
 
 GLuint ListTower, ListPuente, ListPerimetro, ListPorton, ListSuelo;
 GLuint ListHead, ListTorso, ListBrazo, ListPierna;
@@ -70,6 +78,17 @@ void init(void) {
     glLightfv(GL_LIGHT0, GL_DIFFUSE, LightDiffuse);
     //activa la luz
     glEnable(GL_LIGHT0);
+
+    /* Generador de numeros aleatorios */
+    srand(time(NULL));
+    int posRand = 1 + rand() % (90 - 1);
+    std::cout << posRand << std::endl;
+    if(posRand > 45){
+        PosPersoX = (posRand - 45) * - 1;
+    }else{
+        PosPersoX = posRand;
+    }
+    std::cout << PosPersoX << std::endl;
 
     ListTower = glGenLists(1);
     glNewList(ListTower, GL_COMPILE);
@@ -1235,12 +1254,34 @@ void display() {
     glCallList(ListPerimetro);
     glTranslatef(-330.0, 0.0f, 0.0);
 
-    //glCallList(ListPorton);
+    glCallList(ListPorton);
 
     glTranslatef(120.0, 0.0f, 0.0);
     glCallList(ListTower);
     glTranslatef(-60.0, 0.0f, 0.0);
     glCallList(ListPuente);
+
+    /* Carga de los diferentes Objetos */
+
+
+    glTranslatef(PosObj1X, PosObj1Y, PosObj1Z);
+    glScalef(0.5f,0.5f,0.5f);
+    glCallList(ListObjeto1);
+    glScalef(2.0f,2.0f,2.0f);
+    glTranslatef(PosObj1X*-1, PosObj1Y*-1, PosObj1Z*-1);
+
+    glTranslatef(PosObj2X, PosObj2Y, PosObj2Z);
+    glScalef(0.5f,0.5f,0.5f);
+    glCallList(ListObjeto2);
+    glScalef(2.0f,2.0f,2.0f);
+    glTranslatef(PosObj2X*-1, PosObj2Y*-1, PosObj2Z*-1);
+
+    glTranslatef(PosObj3X, PosObj3Y, PosObj3Z);
+    glScalef(0.5f,0.5f,0.5f);
+    glCallList(ListObjeto3);
+    glScalef(2.0f,2.0f,2.0f);
+    glTranslatef(PosObj3X*-1, PosObj3Y*-1, PosObj3Z*-1);
+
 
     //PERSONAJE
     glRotatef(RotPersoAngle, RotPersoX, RotPersoY, RotPersoZ);
@@ -1263,13 +1304,6 @@ void display() {
     glCallList(ListPierna);
     glTranslatef(5, 0.0, 0.0f);
     glCallList(ListPierna);
-
-
-    //glTranslatef(0,2.5,15);
-    //glCallList(ListObjeto3);
-
-
-
 
     //glFlush();
     glutSwapBuffers();
@@ -1308,37 +1342,36 @@ void reshape(int w, int h) {
 
 }
 
-int saltandoAnimation = 0;
-
 void pauseAnimation() {
     // Llamamo a la función para detener la animación
-    saltandoAnimation = 0;
+    animating = 0;
 }
 
 void updateFrame() {
     // En esta funcion agregamos el codigo que hara la secuencia de cada escena como si fuera un fotograma
 
-    for (int i = 0; i < 15; ++i) {
-        PosPersoY += 0.01;
+    glColor3f(0.0,1.0,0.0);
+    //Hacemos que la tetera gire
+    for (int i=0; i<=5; i++){
+        PosObj1Y = PosObj1Y -= 0.5;
+        PosObj2Y = PosObj2Y -= 0.5;
+        PosObj3Y = PosObj3Y -= 0.5;
+        //std::cout << PosObj1Y << std::endl;
     }
-
-    /*for (int j = 0; j < 15; ++j) {
-        PosPersoY -= 0.01;
-    }*/
-
     //Verificamos el numero de frames para detener animación
-    if (frameNumber == 200) {
+    if(frameNumber==25)
+    {
         pauseAnimation();
-        frameNumber = 0;
+        frameNumber=0;
     }
     //Almacenamos el numero de frames
     frameNumber++;
-    printf("Numero de Frame: %d \n", frameNumber);
+    printf ("Numero de Frame: %d \n", frameNumber);
 }
 
 void timerFunction(int timerID) {
     // Invocamos la funcion para controlar el tiempo de la ejecucion de funciones
-    if (saltandoAnimation) {
+    if (animating) {
         updateFrame();
         glutTimerFunc(30, timerFunction, 0);
         glutPostRedisplay();
@@ -1347,8 +1380,8 @@ void timerFunction(int timerID) {
 
 void startAnimation() {
     // llamamos la función para iniciar la animación
-    if (!saltandoAnimation) {
-        saltandoAnimation = 1;
+    if (!animating) {
+        animating= 1;
         glutTimerFunc(30, timerFunction, 1);
     }
 }
@@ -1384,7 +1417,11 @@ void keyboard(unsigned char key, int x, int y) {
             break;
 
         case 'a':
-            if (RotPersoAngle != 270) {
+            PosObj1X -= 1;
+            PosObj2X -= 1;
+            PosObj3X -= 1;
+
+            /*if (RotPersoAngle != 270) {
 
                 if (RotPersoAngle == 180) {
                     temp = PosPersoX;
@@ -1403,7 +1440,7 @@ void keyboard(unsigned char key, int x, int y) {
                 PosPersoX *= -1;
                 PosPersoZ *= -1;
             }
-            PosPersoZ += step;
+            PosPersoZ += step;*/
             break;
 
         case 's' :
@@ -1432,8 +1469,26 @@ void keyboard(unsigned char key, int x, int y) {
             PosPersoZ += step;
             break;
 
+        case '1':
+            PosObj1Y = 280.0f;
+            PosObj2Y = 280.0f;
+            PosObj3Y = 80.0f;
+            break;
+        case '2':
+            PosObj1Y = 80.0f;
+            PosObj2Y = 280.0f;
+            PosObj3Y = 280.0f;
+            break;
+        case '3':
+            PosObj1Y = 280.0f;
+            PosObj2Y = 80.0f;
+            PosObj3Y = 280.0f;
+            break;
         case 'd' :
-            if (RotPersoAngle != 90) {
+            PosObj1X += 1;
+            PosObj2X += 1;
+            PosObj3X += 1;
+            /*if (RotPersoAngle != 90) {
 
                 if (RotPersoAngle == 180) {
                     temp = PosPersoX;
@@ -1452,7 +1507,7 @@ void keyboard(unsigned char key, int x, int y) {
                 PosPersoX *= -1;
                 PosPersoZ *= -1;
             }
-            PosPersoZ += step;
+            PosPersoZ += step;*/
             break;
         case '8' :
             Y -= 0.1f;
@@ -1482,6 +1537,20 @@ void keyboard(unsigned char key, int x, int y) {
             std::cout << "X: " << X << std::endl;
             std::cout << "Y: " << Y << std::endl;
             std::cout << "Z: " << Z << std::endl;
+            std::cout << "Perso X: " << PosPersoX << std::endl;
+            std::cout << "Perso Y: " << PosPersoY << std::endl;
+            std::cout << "Perso Z: " << PosPersoZ << std::endl;
+            std::cout << "Perso Angle: " << RotPersoAngle << std::endl;
+            std::cout << "Perso RotX: " << RotPersoX << std::endl;
+            std::cout << "Perso RotY: " << RotPersoY << std::endl;
+            std::cout << "Perso RotZ: " << RotPersoZ << std::endl;
+            break;
+        case ' ':
+            if (animating){
+                pauseAnimation();
+            }else{
+                startAnimation();
+            }
             break;
         case 'q':
             exit(0);            // exit
