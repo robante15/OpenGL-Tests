@@ -1,0 +1,294 @@
+Ejercicio 1: Añadí la linea glTranslatef(2.0f, 0.0f, -2.0f); antes de realizar la rotación del cubo. Quedando el código dentro de mi función display de la siguiente manera:
+
+    glPushMatrix();
+    glTranslatef(2.0f, -2.0f, 0.0f); // Traslación
+    glRotatef(angle, 0.0f, 1.0f, 0.0f); // Rotar alrededor del eje y
+    drawCube();
+    glPopMatrix();
+
+Resultado observado: Ahora el cubo se dibuja más a la derecha de la pantalla, fuera del centro por 2 unidades. El cambio en el valor de Z lo hace ver "más pequeño" ya que se encuentra más alejado de la cámara, por lo cual para el espectador es más pequeño.
+Otro cambio que hice de manera de prueba fue cambiar el valor de Y al momento de hacer la translación, esto me permitía ver la cara superior e inferior del cubo.
+
+Ejercicio 2: Para hacer la parte básica del ejercicio simplemente agregé dos lineas a la función display()
+
+glRotatef(30.0f, 0.0f, 1.0f, 0.0f); // Rotar alrededor del eje y
+glRotatef(45.0f, 1.0f, 0.0f, 0.0f); // Rotar alrededor del eje x
+
+Lo hice separado ya que son dos valores de angulos diferentes en diferentes ejes. Si fuera el mismo valor en ambos ejes podría hacer en la misma linea, por ejemplo:
+glRotatef(45.0f, 1.0f, 1.0f, 0.0f);
+Rotaría 45° tanto en el eje X como en el Y
+
+Para el extra hice que rotara en los tres ejes, primero creando las respectivas variables: 
+
+float angle_y = 0.0f;
+float angle_x = 0.0f;
+float angle_z = 0.0f;
+int rotation_x_direction = 1;
+int rotation_y_direction = 1;
+int rotation_z_direction = 1;
+
+Luego actualizando el display() para aplicar la rotación en los 3 ejes:
+glRotatef(angle_y, 0.0f, 1.0f, 0.0f);
+glRotatef(angle_x, 1.0f, 0.0f, 0.0f);
+glRotatef(angle_z, 0.0f, 0.0f, 1.0f);
+
+Por ultimo en idle() agregué la siguiente lógica:
+void idle()
+{
+    angle_y += 2.0f * rotation_y_direction;
+    if (angle_y >= 360.0f)
+    rotation_y_direction *= -1;
+    if (angle_y <= 0.0f)
+        rotation_y_direction *= -1;
+
+    angle_x += 1.0f * rotation_x_direction;
+    if (angle_x >= 360.0f)
+        rotation_x_direction *= -1;
+    if (angle_x <= 0.0f)
+        rotation_x_direction *= -1;
+
+    angle_z += 0.5f * rotation_z_direction;
+    if (angle_z >= 360.0f)
+        rotation_z_direction *= -1;
+    if (angle_z <= 0.0f)
+        rotation_z_direction *= -1;
+
+    glutPostRedisplay();
+}
+
+Lo hice así para dar un efecto de rebote, al llegar a 360° lo que hace es que invierte la variable rotation_XYZ_direction y ahora en lugar de sumar empieza a restar los valores, por lo que empieza a rotar en dirección opuesta, dando un efecto de rebote.
+
+Ejercicio 3: Simplemente incluí la linea glScalef(2.0f, 0.5f, 1.0f); antes de glRotatef(). Por qué esos valores? 2.0f sería el doble de grande en X, 0.5f sería la mitad en y, y 1.0f no modificaría el valor en Z
+
+Qué observé? Que escalando de manera no uniforme se altera el cubo, con ese factor de escala ahora parece una caja pacha, como en la que vienen las pizzas. 
+Variando diferentes valores de escala lo puedo hacer alto como una torre, plano como una caja de pizza, o más grande como un bus. Se deforma en el eje en que aumente o reduzca la escala sin tener que modificar el valor de sus vertices.
+
+
+
+Ejercicio 4: Para agregar el código del segundo cubo lo agregué debajo del primer cubo, después de glPopMatrix();
+Para que las transformaciones en la matriz del primer cubo no afectasen al segundo.
+   glPushMatrix();
+    glTranslatef(-2.0f, -0.0f, 0.0f);
+    glRotatef(60.0f, 0.0f, 0.0f, 1.0f);
+    glScalef(0.5f, 0.5f, 0.5f);
+    drawCube();
+    glPopMatrix();
+    
+ *glTranslatef(-2.0f, -0.0f, 0.0f); para alejarlo 2 unidades hacia la izquierda con respecto al centro, qué es dónde está ubicado el primer cubo.
+ *glRotatef(60.0f, 0.0f, 0.0f, 1.0f); para rotarlo 60° en el eje Z
+ *glScalef(0.5f, 0.5f, 0.5f); para hacerlo la mitad de tamaño con respecto al original, en todos sus ejes para no perder las proporciones.
+ 
+ Como extra agregué la rotación: glRotatef(angle_2_cube, 0.0f, 1.0f, 0.0f); arriba de la primera rotación para que primero rote de manera dinamica en el eje Y, pero que conserve una rotación fija de 60° en el eje Z. (Obviamente su respectiva variable de rotación, y la inclusión de dicho código en idle())
+ 
+Ejercicio 5: Con que tramposo eh? Al principio tuve complicaciones, ya que el ejercicio pedía que el cubo "hijo" rote alrededor del cubo "padre", intentaba hacerlo con glRotatef() sin ningún resultado, ya que la rotación debía de realizarla con respecto al punto de origen, y no sobre su propio eje... Luego recordé las coordenadas polares, y caí a cuenta que si bien el ejercicio pide que el cubo hijo rote alrededor del padre, en realidad no está realizando un movimiento de rotación, sino un movimiento de translación alrededor del padre. (Simil a los planetas, que rotan sobre su propio eje, pero se transladan alrededor del sol, aunque nosotros coloquialmente digamos que rotan alrededor del sol) 
+
+Ya con esto en mente entonces definí las siguientes variables:
+
+float angle_1_cube1 = 0.0f; // Ángulo de rotación del cubo 1
+
+float angle_1_cube2 = 0.0f; // Angulo de rotación del cubo 2
+float angle_2_cube2 = 0.0f; // Angulo de rotación del cubo 2 pero para utilizar en las coordenadas polares
+float cube2_x = 0.0f; // Coordenadas en X del cubo 2
+float cube2_z = 0.0f; // Coordenadas en Z del cubo 2
+
+Por qué coordenadas en Z? Ya que la rotación la va a hacer con respecto al eje Y, por ende las coordenadas a manipular son X y Z, que sería como ver un plano polar desde arriba.
+
+Con estas variables actualicé idle():
+void idle()
+{
+    angle_1_cube1 += 0.5f; // Incrementar ángulo para animación
+    if (angle_1_cube1 >= 360.0f)
+        angle_1_cube1 -= 360.0f;
+
+    cube2_x = 1.5f * cos(angle_2_cube2);
+    cube2_z = 1.5f * sin(angle_2_cube2);
+    angle_2_cube2 += 0.05f; // Incrementar ángulo para animación
+    if (angle_2_cube2 >= 360.0f)
+        angle_2_cube2 -= 360.0f;
+
+    angle_1_cube2 -= 1.0f; // Incrementar ángulo para animación
+    if (angle_1_cube2 <= -360.0f)
+        angle_1_cube2 += 360.0f;
+    glutPostRedisplay();
+}
+
+y por último actualicé display():
+    glPushMatrix();
+    glRotatef(angle_1_cube1, 0.0f, 1.0f, 0.0f); // Rotación alrededor del eje Y
+    drawCube();
+    glPopMatrix();
+
+    glPushMatrix();
+    glRotatef(angle_1_cube2, 0.0f, 1.0f, 0.0f); // Rotación alrededor del eje Y
+    glTranslatef(cube2_x, -1.5f, cube2_z); // Traslación del segundo cubo
+    glScalef(0.5f, 0.5f, 0.5f); // Escalado del primer cubo
+    drawCube();
+    glPopMatrix();
+    
+No sé si sea la misma manera en que tu te lo hayas imaginado, pero funcionó según lo que entendí de los requisitos del ejericicio. 
+
+Ejercicio 6:
+Este ejercicio fue necesario nada más cambiar los parametros de
+gluLookAt(3.0, 3.0, 3.0,  // Posición de la cámara
+0.0, 0.0, 0.0,  // Punto al que mira
+0.0, 1.0, 0.0); // Vector arriba
+Lo que observé es qué cambió la perspectiva desde donde se ubicaba el observador, en este caso la cámara
+Al poner estos valores así se veía cómo que si la vista era desde una esquina superior.
+Al probar otros valores va cambiando la dirección de la cámara pero siempre viendo al centro de la escena
+
+Ejercicio 7:
+En este ejercicio se crearon 3 variables nuevas:
+float camera_x = 0.0f;
+float camera_y = 0.0f;
+float camera_z = 3.0f;
+Se le asignaron como posición a la cámara:
+gluLookAt(camera_x, camera_y, camera_z,  // Posición de la cámara
+              0.0, 0.0, 0.0,  // Punto al que mira
+              0.0, 1.0, 0.0); // Vector arriba
+
+Y se implementó una función de input para manejar la entrada del teclado de la siguiente manera:
+void input(unsigned char key, int x, int y){
+    switch(key){
+        case 27: // Tecla ESC
+            exit(0); // Sale del programa
+            break;
+        case 'w': // Tecla 'w'
+            if(camera_z > 1.0f) {
+                camera_z -= 0.1f; // Mueve la cámara hacia adelante
+                glutPostRedisplay();
+            }
+            break;
+        case 's': // Tecla 's'
+            camera_z += 0.1f;
+            glutPostRedisplay();
+            break;
+        case 'a': // Tecla 'a'
+            camera_x -= 0.1f; // Mueve la cámara hacia la izquierda
+            glutPostRedisplay();
+            break;
+        case 'd': // Tecla 'd'
+            camera_x += 0.1f; // Mueve la cámara hacia la derecha
+            glutPostRedisplay();
+            break;
+    }
+
+}
+
+La tecla W se limita qué no pueda tener un valor menor que 1.0f en el eje Z de la cámara para que no atraviece el cuadrado, así que aunque se acerca bastante, no lo atraviesa en ningún momento.
+Se puede observar el movimiento de la cámara al acercarlo y alejarlo. Al moverse a los laterales puede ser un poco confuso ya que el cubo no deja de esta en el centro, y por sentido común uno esperaría que el cuadro se mueva a la derecha o izquierda.
+Esto sucede ya que uno mueve la cámara a la derecha pero sigue estando apuntada al origen, lo que hace que en un primer momento se vea un costado del cubo, y por último se empieza a "reducir" el tamaño del cubo, pero esto se debe a que la cámara se sigue alejando.
+Para obtener un comportamiento en que se mueva el cubo hacia la derecha sería necesario mover el punto de visión de la cámara al mismo tiempo que se mueve la cámara, eso daría la sensación de que uno se mueve a la derecha, pero la vista siempre al frente.
+
+Ejercicio 8:
+Eliminé la función que dibujaba un cubo, y ahora en display incluí la creación de una esfera con el comando:
+gluSphere(gluNewQuadric(), 0.5, 20, 20); // Dibuja una esfera
+Se le aplicaron rotaciones pero no se observa mucho cambio ya que tienen un color solido, una roja y otra verde
+Al aplicar translación si se puede observar que hay una esfera girando alrededor de otra.
+
+Ejercicio 9:
+En este caso fue más complicado, ya que cada linea está conformada por 2 vertices, para hacer una cara del cubo se necesitan 8 vertices en total
+Lo que hice fue hacer la cara frontal y la posterior primero 8 vertices cada uno, y luego rellenar los laterales, 4 vertices cada lateral. 
+Y simplemente la llamé en lugar de los cubos originales, las transformaciones y rotación siguen igual, ya que sigue siendo un mismo cubo.
+
+void drawCubeWireframe()
+{
+    glLineWidth(3.0f); // Ancho de línea
+    glBegin(GL_LINES);
+
+    glColor3f(1.0, 1.0, 1.0);
+
+    glVertex3f(-0.5, -0.5, 0.5);
+    glVertex3f(0.5, -0.5, 0.5);
+    glVertex3f(0.5, 0.5, 0.5);
+    glVertex3f(-0.5, 0.5, 0.5);
+    glVertex3f(-0.5, -0.5, 0.5);
+    glVertex3f(-0.5, 0.5, 0.5);
+    glVertex3f(0.5, 0.5, 0.5);
+    glVertex3f(0.5, -0.5, 0.5);
+
+    glVertex3f(-0.5, -0.5, -0.5);
+    glVertex3f(-0.5, 0.5, -0.5);
+    glVertex3f(0.5, 0.5, -0.5);
+    glVertex3f(0.5, -0.5, -0.5);
+    glVertex3f(-0.5, 0.5, -0.5);
+    glVertex3f(0.5, 0.5, -0.5);
+    glVertex3f(0.5, -0.5, -0.5);
+    glVertex3f(-0.5, -0.5, -0.5);
+
+    glVertex3f(-0.5, -0.5, -0.5);
+    glVertex3f(-0.5, -0.5, 0.5);
+    glVertex3f(-0.5, 0.5, 0.5);
+    glVertex3f(-0.5, 0.5, -0.5);
+
+    glVertex3f(0.5, 0.5, 0.5);
+    glVertex3f(0.5, 0.5, -0.5);
+    glVertex3f(0.5, -0.5, 0.5);
+    glVertex3f(0.5, -0.5, -0.5);
+
+    glEnd();
+    checkGLError("drawCube");
+}
+
+Para hacer el cubo resltado simplemente llamé la función drawCubeWireframe() en el display después de haber creado los cubos normales, con eso ya se mostraba la linea encima del cubo normal.
+
+Ejercicio 10:
+Modifiqué la función display para mostrar un cilindro y un cono como lo pide el ejercicio.
+
+glPushMatrix();
+    glRotatef(90.0f, 1.0f, 0.0f, 0.0f); // Rotación alrededor del eje X
+    glTranslatef(1.0f, 0.0f, 0.0f); // Traslación del cilindro
+    glColor3f(1.0, 0.0, 0.0); // Color rojo
+    gluCylinder ( gluNewQuadric(), 0.3f, 0.3f, 1.0f, 20, 10); // Dibuja un cilindro
+    glPopMatrix();
+
+    glPushMatrix();
+    glRotatef(90.0f, 1.0f, 0.0f, 0.0f); // Rotación alrededor del eje X
+    glTranslatef(-1.0f, 0.0f, 0.0f); // Traslación del cilindro
+    glColor3f(0.0, 1.0, 0.0); // Color rojo
+    gluCylinder ( gluNewQuadric(), 0.3f, 0.0f, 1.0f, 20, 10); // Dibuja un cono
+    glPopMatrix();
+
+El cono lo dibujé en -1 para que apareciera a la izquierda del cilindro, y también de un color verde
+
+Ejercicio 11:
+Al eliminar el zbuffer lo que sucede es que OpenGL desconoce qué vertice está adelante, y cual está detrás, por lo cual los dibuja según el orden que le indique el código.
+Esto se observa al intercambiar el rden de dibujo de los dos cubos, ya que intercambia cual va primero, y cual va después, pero sin tomar en cuenta la distancia en z.
+
+Ejercicio 12: 
+Para este ejercicio agregué un cilindro, un cubo y una esfera, cada uno con sus respectivas transformaciones:
+glPushMatrix();
+    glRotatef(angle_1_cube1, 0.0f, 1.0f, 1.0f); // Rotación alrededor del eje X
+    glColor3f(1.0, 0.0, 0.0); // Color rojo
+    gluCylinder ( gluNewQuadric(), 0.3f, 0.3f, 1.0f, 20, 10); // Dibuja un cilindro
+    glPopMatrix();
+
+    glPushMatrix();
+    glRotatef(angle_1_cube1, 1.0f, 0.0f, 1.0f); // Rotación alrededor del eje Y
+    glTranslatef(-2.0f, 0.0f, 0.0f); // Traslación del cilindro
+    drawCube();
+    glPopMatrix();
+
+    glPushMatrix();
+    glRotatef(angle_1_cube2, 0.0f, 1.0f, 0.0f); // Rotación alrededor del eje Y
+    glTranslatef(cube2_x, -1.5f, cube2_z); // Traslación del segundo cubo
+    glScalef(0.5f, 0.5f, 0.5f); // Escalado del primer cubo
+    glColor3f(0.0, 1.0, 0.0); // Color verde
+    gluSphere(gluNewQuadric(), 0.5, 20, 20); // Dibuja una esfera
+    glPopMatrix();
+
+Reutilicé los angulos solo que los apliqué de manera diferente para generar diferentes comportamientos de movimiento.
+Para activar y desactivar el ZBuffer hice lo siguiente, cree una variable booleana que define si se utiliza o no ZBuffer
+
+bool depth_test = true;
+
+Y al presionar la tecla Z se activa o desactiva según corresponda:
+case 't': // Tecla 't'
+depth_test = !depth_test; // Alternar prueba de profundidad
+if (depth_test)
+    glEnable(GL_DEPTH_TEST);
+else
+    glDisable(GL_DEPTH_TEST);
+glutPostRedisplay();
+break;
+
+En cada ejercicio se ha utilizado checkGLError, al final de la función que dibuja el cubo, luego de realizar un glClear, luego de establecer el gluLookAt, al momento de realizar swapbuffer, y al momento de hacer reshape.
