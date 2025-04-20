@@ -4,6 +4,8 @@
 #include <thread>
 #include <stdio.h>
 
+float shiness = 50.0f;
+
 // Inicializar el puntero estático
 Scene *Scene::instance = nullptr;
 
@@ -36,9 +38,54 @@ void Scene::initGL()
     setupLighting();
 }
 
+void drawCube()
+{
+    glBegin(GL_QUADS);
+    // Cara frontal (z = 0.5)
+    glNormal3f(0.0f, 0.0f, 1.0f);
+    glVertex3f(-0.5, -0.5, 0.5);
+    glVertex3f(0.5, -0.5, 0.5);
+    glVertex3f(0.5, 0.5, 0.5);
+    glVertex3f(-0.5, 0.5, 0.5);
+    // Cara trasera (z = -0.5)
+    glNormal3f(0.0f, 0.0f, -1.0f);
+    glVertex3f(-0.5, -0.5, -0.5);
+    glVertex3f(-0.5, 0.5, -0.5);
+    glVertex3f(0.5, 0.5, -0.5);
+    glVertex3f(0.5, -0.5, -0.5);
+    // Cara izquierda (x = -0.5)
+    glNormal3f(-1.0f, 0.0f, 0.0f);
+    glVertex3f(-0.5, -0.5, -0.5);
+    glVertex3f(-0.5, -0.5, 0.5);
+    glVertex3f(-0.5, 0.5, 0.5);
+    glVertex3f(-0.5, 0.5, -0.5);
+    // Cara derecha (x = 0.5)
+    glNormal3f(1.0f, 0.0f, 0.0f);
+    glVertex3f(0.5, -0.5, -0.5);
+    glVertex3f(0.5, 0.5, -0.5);
+    glVertex3f(0.5, 0.5, 0.5);
+    glVertex3f(0.5, -0.5, 0.5);
+    // Cara superior (y = 0.5)
+    glNormal3f(0.0f, 1.0f, 0.0f);
+    glVertex3f(-0.5, 0.5, -0.5);
+    glVertex3f(-0.5, 0.5, 0.5);
+    glVertex3f(0.5, 0.5, 0.5);
+    glVertex3f(0.5, 0.5, -0.5);
+    // Cara inferior (y = -0.5)
+    glNormal3f(0.0f, -1.0f, 0.0f);
+    glVertex3f(-0.5, -0.5, -0.5);
+    glVertex3f(0.5, -0.5, -0.5);
+    glVertex3f(0.5, -0.5, 0.5);
+    glVertex3f(-0.5, -0.5, 0.5);
+    glEnd();
+}
+
 void Scene::setupLighting()
 {
     glEnable(GL_LIGHTING);
+
+    // Configuración de la luz 0
+
     glEnable(GL_LIGHT0);
     GLfloat light_pos[] = {0.0f, 5.0f, 5.0f, 1.0f};
     GLfloat light_ambient[] = {0.2f, 0.2f, 0.2f, 1.0f};
@@ -49,12 +96,32 @@ void Scene::setupLighting()
     glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
     glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
 
+    // Configuración de la luz 1
+    glEnable(GL_LIGHT1);
+    GLfloat light_pos1[] = {0.0f, 5.0f, 0.0f, 0.0f};
+    GLfloat light_ambient1[] = {1.0f, 0.0f, 0.0f, 1.0f};
+    GLfloat light_diffuse1[] = {1.0f, 0.0f, 0.0f, 1.0f};
+    GLfloat light_specular1[] = {1.0f, 1.0f, 1.0f, 1.0f};
+    glLightfv(GL_LIGHT1, GL_POSITION, light_pos1);
+    glLightfv(GL_LIGHT1, GL_AMBIENT, light_ambient1);
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, light_diffuse1);
+    glLightfv(GL_LIGHT1, GL_SPECULAR, light_specular1);
+
+    // Configuración de la luz 2
+    //glEnable(GL_LIGHT2);
+    GLfloat light_pos2[] = {-5.0f, 0.0f, 0.0f, 1.0f};
+    GLfloat light_ambient2[] = {0.0f, 0.5f, 0.0f, 1.0f};
+    GLfloat light_diffuse2[] = {0.0f, 0.5f, 0.0f, 1.0f};
+    GLfloat light_specular2[] = {0.0f, 0.5f, 0.0f, 1.0f};
+    glLightfv(GL_LIGHT2, GL_POSITION, light_pos2);
+    glLightfv(GL_LIGHT2, GL_AMBIENT, light_ambient2);
+    glLightfv(GL_LIGHT2, GL_DIFFUSE, light_diffuse2);
+    glLightfv(GL_LIGHT2, GL_SPECULAR, light_specular2);
+
     glEnable(GL_COLOR_MATERIAL);
     glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
     GLfloat mat_specular[] = {1.0f, 1.0f, 1.0f, 1.0f};
-    GLfloat mat_shininess[] = {50.0f};
     glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-    glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
 }
 
 void Scene::checkGLError(const char *operation)
@@ -87,6 +154,9 @@ void Scene::display()
     if (lighting_enabled)
         glEnable(GL_LIGHTING);
 
+    GLfloat mat_shininess[] = {shiness};
+    glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+
     for (auto *sphere : spheres)
     {
         glPushMatrix();
@@ -97,6 +167,14 @@ void Scene::display()
         gluSphere(quad, 1.0f, 20, 20);
         glPopMatrix();
     }
+
+    // Dibujar el cubo
+    glPushMatrix();
+    glTranslatef(-5.0f, 0.0f, 0.0f);
+    glScalef(2.5f, 2.5f, 2.5f);
+    glColor3f(0.8f, 0.8f, 0.8f);
+    drawCube();
+    glPopMatrix();
 
     glutSwapBuffers();
     checkGLError("glutSwapBuffers");
@@ -188,7 +266,17 @@ void Scene::keyboard(unsigned char key, int x, int y)
         else
             gluQuadricDrawStyle(quad, GLU_POINT);
         break;
+    case '1':
+        shiness = 0.0f;
+        break;
+    case '2':
+        shiness = 50.0f;
+        break;
+    case '3':
+        shiness = 100.0f;
+        break;
     }
+
     glutPostRedisplay();
 }
 

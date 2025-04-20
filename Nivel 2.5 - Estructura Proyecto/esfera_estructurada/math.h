@@ -55,6 +55,20 @@ public:
     }
 };
 
+class Vector4
+{
+public:
+    float x, y, z, w;
+
+    Vector4() : x(0.0f), y(0.0f), z(0.0f), w(1.0f) {}
+    Vector4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}
+
+    Vector4 operator+(const Vector4 &other) const
+    {
+        return Vector4(x + other.x, y + other.y, z + other.z, w + other.w);
+    }
+};
+
 class Matrix4
 {
 public:

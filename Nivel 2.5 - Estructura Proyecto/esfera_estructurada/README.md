@@ -1,174 +1,177 @@
-# Bouncing Spheres: A Modular 3D OpenGL Project
+# Esferas Rebotando: Un Proyecto Modular 3D con OpenGL
 
-This project is a 3D graphics application built with OpenGL 1.1 and GLUT, featuring bouncing spheres inside a wireframe cube, with a modular camera system, dynamic lighting, and user controls. The codebase is organized into modules inspired by the design principles of **librw** (an open-source reimplementation of RenderWare, used in GTA III decompilation projects), emphasizing modularity, reusability, and clarity. It serves as an educational tool for learning 3D graphics, matrix transformations, and object-oriented programming in C++.
+Este proyecto es una aplicación de gráficos 3D construida con OpenGL 1.1 y GLUT, que presenta esferas rebotando dentro de un cubo de alambre, con un sistema de cámara modular, iluminación dinámica y controles de usuario. El código está organizado en módulos inspirados en los principios de diseño de **librw** (una reimplementación de RenderWare usada en proyectos de descompilación de GTA III), con énfasis en modularidad, reutilización y claridad. Sirve como herramienta educativa para aprender gráficos 3D, transformaciones de matrices y programación orientada a objetos en C++.
 
-## Project Overview
+## Descripción del Proyecto
 
-The application renders a 3D scene where:
-- Spheres with random colors and velocities bounce inside a 10x10x10 wireframe cube.
-- A user-controlled camera allows navigation using WASD keys (movement), QE keys (vertical movement), and mouse dragging (rotation).
-- A single point light illuminates the spheres, with togglable lighting and adjustable rendering styles (filled, wireframe, points).
-- Users can add/remove spheres, adjust their speed, stop/resume motion, and toggle lighting and rendering styles via keyboard controls.
+La aplicación renderiza una escena 3D donde:
 
-The project is designed for educational purposes, demonstrating:
-- Modular C++ programming with separate classes for mathematics, camera, spheres, and scene management.
-- 3D transformations using custom vector and matrix classes.
-- OpenGL pipeline concepts (modelview, projection, lighting).
-- User input handling with GLUT.
+- Esferas con colores y velocidades aleatorias rebotan dentro de un cubo de alambre de 10x10x10.
+- Una cámara controlada por el usuario permite navegar usando las teclas WASD (movimiento), QE (movimiento vertical) y arrastre con el ratón (rotación).
+- Una luz puntual ilumina las esferas, con iluminación switchable y estilos de renderizado ajustables (relleno, alambre, puntos).
+- Los usuarios pueden agregar/eliminar esferas, ajustar su velocidad, detener/reanudar el movimiento, y alternar estilos de iluminación y renderizado mediante el teclado.
 
-## File Structure
+Este proyecto está diseñado con fines educativos, demostrando:
 
-The project consists of the following files, organized to promote modularity and maintainability:
+- Programación modular en C++ con clases separadas para matemáticas, cámara, esferas y administración de la escena.
+- Transformaciones 3D usando clases personalizadas de vectores y matrices.
+- Conceptos del pipeline de OpenGL (modelview, proyección, iluminación).
+- Manejo de entrada de usuario con GLUT.
+
+## Estructura de Archivos
+
+El proyecto está compuesto por los siguientes archivos, organizados para promover la modularidad y el mantenimiento:
 
 - **`math.h`, `math.cpp`**:
-  - Defines `Vector3` and `Matrix4` classes for 3D vector and matrix operations.
-  - `Vector3`: Supports addition, subtraction, dot product, cross product, normalization, and length calculation.
-  - `Matrix4`: Implements a 4x4 matrix with a `lookAt` function to compute view matrices and `getOpenGLMatrix` to interface with OpenGL.
-  - Used by the camera and sphere modules for transformations.
+    - Define las clases `Vector3` y `Matrix4` para operaciones con vectores y matrices 3D.
+    - `Vector3`: Soporta suma, resta, producto punto, producto cruz, normalización y cálculo de longitud.
+    - `Matrix4`: Implementa una matriz 4x4 con una función `lookAt` para calcular matrices de vista y `getOpenGLMatrix` para interactuar con OpenGL.
+    - Usado por los módulos de cámara y esfera para transformaciones.
 
 - **`camera.h`, `camera.cpp`**:
-  - Implements the `Camera` class for 3D navigation.
-  - Stores position, forward direction, and up vector as `Vector3`.
-  - Supports movement (forward, right, up) and rotation (yaw, pitch) via keyboard and mouse input.
-  - Computes the view matrix using `Matrix4::lookAt`, replacing `gluLookAt`.
+    - Implementa la clase `Camera` para navegación 3D.
+    - Almacena posición, dirección hacia adelante y vector hacia arriba como `Vector3`.
+    - Soporta movimiento (adelante, derecha, arriba) y rotación (yaw, pitch) mediante entrada de teclado y ratón.
+    - Calcula la matriz de vista usando `Matrix4::lookAt`, reemplazando `gluLookAt`.
 
 - **`sphere.h`, `sphere.cpp`**:
-  - Defines the `TSphere` class for bouncing spheres.
-  - Each sphere has a position, direction, speed, and color (all as `Vector3`).
-  - Handles bouncing logic (collision with cube boundaries), speed modification, and motion control.
-  - Generates random initial positions, directions, and colors.
+    - Define la clase `TSphere` para esferas rebotando.
+    - Cada esfera tiene una posición, dirección, velocidad y color (todos como `Vector3`).
+    - Maneja la lógica de rebote (colisión con los límites del cubo), modificación de velocidad y control de movimiento.
+    - Genera posiciones, direcciones y colores iniciales aleatorios.
 
 - **`scene.h`, `scene.cpp`**:
-  - Implements the `Scene` class, managing the OpenGL context, rendering, and user input.
-  - Contains a vector of `TSphere` pointers, a `Camera` instance, and a `GLUquadric` for rendering spheres.
-  - Handles lighting setup, rendering loop, and input processing (keyboard, mouse).
-  - Uses static callback functions to interface with GLUT.
+    - Implementa la clase `Scene`, gestionando el contexto de OpenGL, renderizado y entrada del usuario.
+    - Contiene un vector de punteros a `TSphere`, una instancia de `Camera` y un `GLUquadric` para renderizar esferas.
+    - Maneja la configuración de iluminación, el bucle de renderizado y el procesamiento de entrada (teclado, ratón).
+    - Usa funciones de callback estáticas para interactuar con GLUT.
 
 - **`main.cpp`**:
-  - Entry point of the application.
-  - Initializes GLUT, creates a `Scene` instance, and registers callbacks for rendering, input, and idle processing.
+    - Punto de entrada de la aplicación.
+    - Inicializa GLUT, crea una instancia de `Scene` y registra callbacks para renderizado, entrada y procesamiento en reposo.
 
-## Workflow
+## Flujo de Trabajo
 
-The program's execution follows this flow:
+La ejecución del programa sigue este flujo:
 
-1. **Initialization** (`main.cpp`):
-   - GLUT is initialized with a double-buffered RGBA window (800x600 pixels) and depth testing.
-   - A `Scene` object is created, initializing the camera, one sphere, lighting, and OpenGL state.
+1. **Inicialización** (`main.cpp`):
+    - GLUT se inicializa con una ventana RGBA de doble búfer (800x600 píxeles) y prueba de profundidad.
+    - Se crea un objeto `Scene`, que inicializa la cámara, una esfera, la iluminación y el estado de OpenGL.
 
-2. **Scene Setup** (`Scene::Scene`, `Scene::initGL`):
-   - The camera is positioned at `(3, 3, 14)`, looking at `(0, 0, 0)` with up vector `(0, 1, 0)`.
-   - A point light (`GL_LIGHT0`) is configured at `(0, 5, 5)` with ambient, diffuse, and specular components.
-   - A `GLUquadric` is created for sphere rendering with smooth normals.
+2. **Configuración de la Escena** (`Scene::Scene`, `Scene::initGL`):
+    - La cámara se posiciona en `(3, 3, 14)`, mirando hacia `(0, 0, 0)` con el vector hacia arriba `(0, 1, 0)`.
+    - Se configura una luz puntual (`GL_LIGHT0`) en `(0, 5, 5)` con componentes ambientales, difusas y especulares.
+    - Se crea un `GLUquadric` para renderizar esferas con normales suaves.
 
-3. **Rendering Loop** (`Scene::display`):
-   - Clears the color and depth buffers.
-   - Sets the modelview matrix using the camera's view matrix (`camera->getViewMatrix().getOpenGLMatrix`).
-   - Renders the wireframe cube (white, unaffected by lighting when lighting is disabled).
-   - Renders each sphere at its position with its color, using `gluSphere`.
-   - Swaps buffers to display the frame.
+3. **Bucle de Renderizado** (`Scene::display`):
+    - Limpia los búferes de color y profundidad.
+    - Establece la matriz de modelo-vista usando la matriz de vista de la cámara (`camera->getViewMatrix().getOpenGLMatrix`).
+    - Renderiza el cubo wireframe (blanco, no afectado por la iluminación cuando está desactivada).
+    - Renderiza cada esfera en su posición con su color, usando `gluSphere`.
+    - Intercambia los búferes para mostrar el fotograma.
 
-4. **Input Handling** (`Scene::keyboard`, `Scene::mouse`, `Scene::motion`):
-   - Keyboard: Processes keys for camera movement (WASDQE), sphere control (+, -, t, r, 0, p), lighting toggle (l), and style change (c).
-   - Mouse: Dragging the left button rotates the camera (yaw and pitch).
-   - Ensures the camera stays above `z=6.0` to avoid entering the cube.
+4. **Manejo de Entrada** (`Scene::keyboard`, `Scene::mouse`, `Scene::motion`):
+    - Teclado: Procesa teclas para mover la cámara (WASDQE), controlar esferas (+, -, t, r, 0, p), alternar iluminación (l) y cambiar el estilo (c).
+    - Ratón: Arrastrar con el botón izquierdo rota la cámara (yaw y pitch).
+    - Asegura que la cámara permanezca por encima de `z=6.0` para evitar entrar al cubo.
 
-5. **Update Loop** (`Scene::idle`):
-   - Updates each sphere's position, checking for collisions with the cube boundaries.
-   - Sleeps for 33ms to limit the frame rate to ~30 FPS.
-   - Requests a redraw with `glutPostRedisplay`.
+5. **Bucle de Actualización** (`Scene::idle`):
+    - Actualiza la posición de cada esfera, verificando colisiones con los límites del cubo.
+    - Duerme durante 33ms para limitar la tasa de fotogramas a ~30 FPS.
+    - Solicita un redibujado con `glutPostRedisplay`.
 
-6. **Reshape** (`Scene::reshape`):
-   - Adjusts the viewport and projection matrix (`gluPerspective`) when the window is resized.
-   - Uses a 60° field of view, near plane at 1.0, and far plane at 100.0.
+6. **Redimensionar** (`Scene::reshape`):
+    - Ajusta el viewport y la matriz de proyección (`gluPerspective`) cuando se redimensiona la ventana.
+    - Usa un campo de visión de 60°, un plano cercano a 1.0 y un plano lejano a 100.0.
 
-## Key Functions and Classes
+## Funciones y Clases Clave
 
-### Classes
+### Clases
 - **`Vector3`** (`math.h`):
-  - Represents a 3D vector with operations like `operator+`, `dot`, `cross`, `normalized`, and `length`.
-  - Used for positions, directions, and colors.
+    - Representa un vector 3D con operaciones como `operator+`, `dot`, `cross`, `normalized` y `length`.
+    - Usado para posiciones, direcciones y colores.
 
 - **`Matrix4`** (`math.h`):
-  - Represents a 4x4 matrix for transformations.
-  - `lookAt(eye, center, up)`: Computes a view matrix for the camera.
-  - `getOpenGLMatrix(out)`: Converts the matrix to an OpenGL-compatible `float[16]`.
+    - Representa una matriz 4x4 para transformaciones.
+    - `lookAt(eye, center, up)`: Calcula una matriz de vista para la cámara.
+    - `getOpenGLMatrix(out)`: Convierte la matriz a un formato compatible con OpenGL (`float[16]`).
 
 - **`Camera`** (`camera.h`):
-  - Manages camera position, orientation, and movement.
-  - Methods:
-    - `moveForward(delta)`, `moveRight(delta)`, `moveUp(delta)`: Translates the camera.
-    - `rotate(delta_yaw, delta_pitch)`: Rotates the camera (pitch limited to ±90°).
-    - `getViewMatrix()`: Returns the view matrix using `Matrix4::lookAt`.
-    - `update()`: Recalculates forward and up vectors after rotation.
+    - Gestiona la posición, orientación y movimiento de la cámara.
+    - Métodos:
+        - `moveForward(delta)`, `moveRight(delta)`, `moveUp(delta)`: Translada la cámara.
+        - `rotate(delta_yaw, delta_pitch)`: Rota la cámara (pitch limitado a ±90°).
+        - `getViewMatrix()`: Devuelve la matriz de vista usando `Matrix4::lookAt`.
+        - `update()`: Recalcula los vectores `forward` y `up` después de la rotación.
 
 - **`TSphere`** (`sphere.h`):
-  - Represents a bouncing sphere.
-  - Methods:
-    - `test()`: Updates position and reverses direction on cube boundary collision.
-    - `modifySpeed(inc)`: Adjusts speed and direction.
-    - `restoreSpeed(new_speed)`: Resets speed to original or specified value.
-    - `getPos()`, `getColor()`, `getSpeed()`: Accessors for rendering and control.
+    - Representa una esfera rebotando.
+    - Métodos:
+        - `test()`: Actualiza la posición y revierte la dirección al colisionar con los límites del cubo.
+        - `modifySpeed(inc)`: Ajusta la velocidad y dirección.
+        - `restoreSpeed(new_speed)`: Restaura la velocidad al valor original o especificado.
+        - `getPos()`, `getColor()`, `getSpeed()`: Accesores para renderizado y control.
 
 - **`Scene`** (`scene.h`):
-  - Manages the scene, rendering, and input.
-  - Methods:
-    - `display()`: Renders the scene.
-    - `reshape(width, height)`: Updates projection matrix.
-    - `idle()`: Updates sphere positions.
-    - `keyboard(key, x, y)`: Handles keyboard input.
-    - `mouse(button, state, x, y)`, `motion(x, y)`: Handles mouse input.
-    - Static callbacks (`displayCallback`, etc.): Interface with GLUT.
+    - Gestiona la escena, el renderizado y la entrada del usuario.
+    - Métodos:
+        - `display()`: Renderiza la escena.
+        - `reshape(width, height)`: Actualiza la matriz de proyección.
+        - `idle()`: Actualiza las posiciones de las esferas.
+        - `keyboard(key, x, y)`: Maneja la entrada del teclado.
+        - `mouse(button, state, x, y)`, `motion(x, y)`: Maneja la entrada del ratón.
+        - Callbacks estáticos (`displayCallback`, etc.): Interfaz con GLUT.
 
-### User Controls
-- **Camera**:
-  - **WASD**: Move forward/backward, left/right.
-  - **QE**: Move up/down.
-  - **Mouse (left drag)**: Rotate (yaw and pitch).
-- **Spheres**:
-  - **t**: Add a new sphere.
-  - **r**: Remove the last sphere.
-  - **+**, **-**: Increase/decrease speed.
-  - **0**: Stop all spheres.
-  - **p**: Restore original speeds.
-- **Rendering**:
-  - **l**: Toggle lighting.
-  - **c**: Cycle sphere rendering style (filled, wireframe, points).
-- **Exit**:
-  - **Esc**: Close the application.
+### Controles del Usuario
 
-## Understanding the Code
+- **Cámara**:
+  - **WASD**: mover adelante/atrás, izquierda/derecha.
+  - **QE**: mover arriba/abajo.
+  - **Ratón (botón izquierdo)**: rotar (yaw y pitch).
+- **Esferas**:
+  - **t**: agregar esfera.
+  - **r**: eliminar última esfera.
+  - **+**, **-**: aumentar/disminuir velocidad.
+  - **0**: detener todas.
+  - **p**: restaurar velocidades.
+- **Renderizado**:
+  - **l**: alternar iluminación.
+  - **c**: cambiar estilo de renderizado.
+- **Salir**:
+  - **Esc**: cerrar aplicación.
 
-### Core Concepts
-1. **Modular Design**:
-   - The code is split into modules (`math`, `camera`, `sphere`, `scene`) for reusability and maintainability, inspired by **librw**.
-   - Each module has a clear responsibility (e.g., `math` for vector/matrix math, `camera` for navigation).
+## Entendiendo el Código
 
-2. **Camera System**:
-   - The `Camera` class uses `Vector3` for position, forward, and up vectors, and `Matrix4` for the view matrix.
-   - Movement is relative to the camera's orientation (e.g., `forward` for WASD), and rotation uses yaw/pitch for natural control.
-   - The view matrix is computed with `Matrix4::lookAt`, applied to `GL_MODELVIEW` in `Scene::display`.
+### Conceptos Clave
+1. **Diseño Modular**:
+    - El código está dividido en módulos (`math`, `camera`, `sphere`, `scene`) para promover la reutilización y el mantenimiento, inspirado en **librw**.
+    - Cada módulo tiene una responsabilidad clara (por ejemplo, `math` para matemáticas de vectores/matrices, `camera` para navegación).
 
-3. **OpenGL Pipeline**:
-   - **GL_MODELVIEW**: Combines the view matrix (camera) and model transformations (object positions).
-   - **GL_PROJECTION**: Defines a perspective projection (60° FOV, near=1.0, far=100.0).
-   - Lighting uses `GL_LIGHT0` with ambient, diffuse, and specular components, and `GL_COLOR_MATERIAL` for sphere colors.
+2. **Sistema de Cámara**:
+    - La clase `Camera` utiliza `Vector3` para los vectores de posición, dirección hacia adelante y hacia arriba, y `Matrix4` para la matriz de vista.
+    - El movimiento es relativo a la orientación de la cámara (por ejemplo, `forward` para WASD), y la rotación usa yaw/pitch para un control natural.
+    - La matriz de vista se calcula con `Matrix4::lookAt` y se aplica a `GL_MODELVIEW` en `Scene::display`.
 
-4. **Sphere Dynamics**:
-   - Spheres move with constant velocity, reversing direction when hitting the cube boundaries (`±5` in X, Y, Z).
-   - Random colors and initial directions add visual variety.
+3. **Pipeline de OpenGL**:
+    - **GL_MODELVIEW**: Combina la matriz de vista (cámara) y las transformaciones del modelo (posiciones de los objetos).
+    - **GL_PROJECTION**: Define una proyección en perspectiva (FOV de 60°, cercano=1.0, lejano=100.0).
+    - La iluminación utiliza `GL_LIGHT0` con componentes ambientales, difusas y especulares, y `GL_COLOR_MATERIAL` para los colores de las esferas.
 
-### Key Implementation Details
-- **View Matrix**: The camera's view matrix transforms world coordinates to camera space, applied via `glMultMatrixf` in `Scene::display`.
-- **Lighting**: A single point light at `(0, 5, 5)` creates realistic shading on spheres, with togglable lighting to observe raw colors.
-- **GLUquadric**: Used for rendering spheres with smooth normals, supporting filled, wireframe, and point styles.
-- **Error Checking**: `Scene::checkGLError` logs OpenGL errors for debugging.
+4. **Dinámica de las Esferas**:
+    - Las esferas se mueven con velocidad constante, invirtiendo la dirección al chocar con los límites del cubo (`±5` en X, Y, Z).
+    - Los colores y direcciones iniciales aleatorios añaden variedad visual.
 
-## Compilation and Execution
+### Detalles Clave de Implementación
+- **Matriz de Vista**: La matriz de vista de la cámara transforma las coordenadas del mundo al espacio de la cámara, aplicada mediante `glMultMatrixf` en `Scene::display`.
+- **Iluminación**: Una única luz puntual en `(0, 5, 5)` crea sombras realistas en las esferas, con iluminación conmutable para observar los colores sin procesar.
+- **GLUquadric**: Utilizado para renderizar esferas con normales suaves, soportando estilos de relleno, alambre y puntos.
+- **Verificación de Errores**: `Scene::checkGLError` registra errores de OpenGL para depuración.
 
-### Dependencies
-- **OpenGL**, **GLU**, **GLUT/freeglut**: Required for rendering and window management.
-- **C++11**: For `<random>`, `<thread>`, and modern features.
+## Compilación y Ejecución
+
+### Dependencias
+- **OpenGL**, **GLU**, **GLUT/freeglut**: Requeridos para renderizado y gestión de ventanas.
+- **C++11**: Para `<random>`, `<thread>` y características modernas.
 
 #### Linux (Ubuntu)
 ```bash
@@ -179,15 +182,15 @@ sudo apt-get install freeglut3 freeglut3-dev mesa-common-dev libstdc++6
 ```bash
 pacman -S mingw-w64-x86_64-freeglut
 ```
-Copy `freeglut.dll` to the executable directory or `C:\Windows\System32`.
+Copia `freeglut.dll` al directorio del ejecutable o a `C:\Windows\System32`.
 
 #### macOS
 ```bash
 brew install freeglut
 ```
 
-### Compile
-Place all source files in the same directory and use:
+### Compilar
+Coloca todos los archivos fuente en el mismo directorio y usa:
 
 #### Linux
 ```bash
@@ -204,52 +207,49 @@ g++ -o bouncing_spheres.exe main.cpp scene.cpp sphere.cpp camera.cpp math.cpp -l
 g++ -o bouncing_spheres main.cpp scene.cpp sphere.cpp camera.cpp math.cpp -framework OpenGL -framework GLUT -std=c++11
 ```
 
-### Run
+### Ejecutar
 ```bash
 ./bouncing_spheres  # Linux/macOS
 ./bouncing_spheres.exe  # Windows
 ```
 
-## Debugging Tips
-- **Black Screen**: Check the view matrix in `Scene::display`. Print `view_matrix` to verify values:
-  ```cpp
-  float view_matrix[16];
-  camera->getViewMatrix().getOpenGLMatrix(view_matrix);
-  printf("View Matrix:\n");
-  for (int i = 0; i < 4; ++i) {
-      printf("%f %f %f %f\n", view_matrix[i], view_matrix[i+4], view_matrix[i+8], view_matrix[i+12]);
-  }
-  ```
-- **GL Errors**: Enable `Scene::checkGLError` calls to log OpenGL errors.
-- **Camera Issues**: Verify `Camera::update` recalculates `forward` and `up` correctly.
-- **Tools**: Use **gdb**, **VSCode** (with `tasks.json` and `launch.json`), or **RenderDoc** for deeper inspection.
+## Consejos para Depuración
+- **Pantalla Negra**: Verifica la matriz de vista en `Scene::display`. Imprime `view_matrix` para comprobar los valores:
+    ```cpp
+    float view_matrix[16];
+    camera->getViewMatrix().getOpenGLMatrix(view_matrix);
+    printf("Matriz de Vista:\n");
+    for (int i = 0; i < 4; ++i) {
+            printf("%f %f %f %f\n", view_matrix[i], view_matrix[i+4], view_matrix[i+8], view_matrix[i+12]);
+    }
+    ```
+- **Errores de OpenGL**: Habilita las llamadas a `Scene::checkGLError` para registrar errores de OpenGL.
+- **Problemas con la Cámara**: Verifica que `Camera::update` recalcula correctamente los vectores `forward` y `up`.
+- **Herramientas**: Usa **gdb**, **VSCode** (con `tasks.json` y `launch.json`), o **RenderDoc** para una inspección más profunda.
 
-## Additional Information
+## Información Adicional
 
-### Inspiration from librw
-The project draws inspiration from **librw**, an open-source reimplementation of RenderWare used in GTA III decompilation:
-- **Modularity**: Like `rwcore.h` (math) and `rpworld.h` (scene management), our `math`, `camera`, and `scene` modules are independent.
-- **Camera**: The `Camera` class emulates `RwCamera`, using vectors and matrices for natural 3D navigation.
-- **Extensibility**: The codebase can be extended with entities, textures, or shaders, mirroring RenderWare's flexibility.
+### Inspiración de librw
+El proyecto se inspira en **librw**, una reimplementación de código abierto de RenderWare utilizada en la descompilación de GTA III:
+- **Modularidad**: Al igual que `rwcore.h` (matemáticas) y `rpworld.h` (gestión de escenas), nuestros módulos `math`, `camera` y `scene` son independientes.
+- **Cámara**: La clase `Camera` emula a `RwCamera`, utilizando vectores y matrices para una navegación 3D natural.
+- **Extensibilidad**: La base de código puede ampliarse con entidades, texturas o shaders, reflejando la flexibilidad de RenderWare.
 
-### Potential Extensions
-- **Lighting Mini-Project**: Add two more lights (directional red, point green) and a solid cube with normals, with controls for `shininess` (keys 1, 2, 3).
-- **Collisions**: Implement sphere-sphere collision detection using `Vector3::length`.
-- **Textures**: Apply textures to spheres or the cube using OpenGL texture mapping.
-- **Entity System**: Create a base `Entity` class for spheres and other objects, inspired by `RpClump`.
-- **Modern OpenGL**: Migrate to OpenGL 3.3+ with shaders for better performance and flexibility.
+### Posibles Extensiones
+- **Mini-Proyecto de Iluminación**: Agregar dos luces más (una direccional roja y una puntual verde) y un cubo sólido con normales, con controles para ajustar el `brillo` (teclas 1, 2, 3).
+- **Colisiones**: Implementar detección de colisiones entre esferas utilizando `Vector3::length`.
+- **Texturas**: Aplicar texturas a las esferas o al cubo utilizando mapeo de texturas en OpenGL.
+- **Sistema de Entidades**: Crear una clase base `Entity` para esferas y otros objetos, inspirado en `RpClump`.
+- **OpenGL Moderno**: Migrar a OpenGL 3.3+ con shaders para mejorar el rendimiento y la flexibilidad.
 
-### Notes
-- The camera ensures `z >= 6.0` to prevent entering the cube, maintaining visibility.
-- The frame rate is capped at ~30 FPS using a 33ms sleep in `Scene::idle`.
-- The project uses OpenGL 1.1 for simplicity but can be adapted to modern OpenGL.
+### Notas
+- La cámara asegura que `z >= 6.0` para evitar entrar en el cubo, manteniendo la visibilidad.
+- La tasa de fotogramas está limitada a ~30 FPS utilizando una pausa de 33ms en `Scene::idle`.
+- El proyecto utiliza OpenGL 1.1 por simplicidad, pero puede adaptarse a OpenGL moderno.
 
-## License
-This project is provided for educational purposes. Feel free to use, modify, and distribute it under the [MIT License](LICENSE).
+## Agradecimientos
+- Inspirado por **librw** y la comunidad de descompilación de GTA III.
+- Desarrollado con OpenGL, GLU y freeglut.
+- Desarrollado como parte de un proceso de aprendizaje de gráficos 3D.
 
-## Acknowledgments
-- Inspired by **librw** and the GTA III decompilation community.
-- Built with OpenGL, GLU, and freeglut.
-- Developed as part of a 3D graphics learning journey.
-
-For questions or contributions, open an issue or pull request on the repository.
+Para preguntas o contribuciones, abre una incidencia o solicitud de incorporación de cambios en el repositorio.
